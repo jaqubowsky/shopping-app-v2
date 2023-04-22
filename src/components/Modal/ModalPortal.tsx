@@ -2,7 +2,7 @@ import { createPortal } from "react-dom";
 import { AnimatePresence } from "framer-motion";
 import { PropsWithChildren } from "react";
 
-type CartModalPortalProps = {
+type ModalPortalProps = {
   toggleModal: React.MouseEventHandler<HTMLDivElement>;
   showModal: boolean;
 };
@@ -10,7 +10,7 @@ type CartModalPortalProps = {
 export default function ModalPortal({
   showModal,
   children,
-}: PropsWithChildren<CartModalPortalProps>) {
+}: PropsWithChildren<ModalPortalProps>) {
   return createPortal(
     <AnimatePresence>{showModal && children}</AnimatePresence>,
     document.body
