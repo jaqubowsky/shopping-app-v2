@@ -13,7 +13,10 @@ function ModalWrapper({
     <motion.div
       id="modal"
       key="modal"
-      onClick={handleCloseModal}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      onClick={() => handleCloseModal}
       className="fixed inset-0 z-50 flex items-center justify-center bg-black-opacity"
     >
       {children}
