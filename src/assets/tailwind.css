@@ -8,3 +8,7 @@
       "Liberation Mono", "Courier New", monospace;
   }
 }
+
+.top-arrow:before {
+  @apply absolute -top-3 left-1/2 transform -translate-x-1/2 h-0 w-0 border-x-8 border-b-[16px] border-x-transparent border-white content-[''];
+}
