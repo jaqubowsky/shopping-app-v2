@@ -12,6 +12,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@material-tailwind/react": "^1.4.2",
     "@reduxjs/toolkit": "^1.9.5",
     "firebase": "^9.20.0",
     "framer-motion": "^10.12.4",
