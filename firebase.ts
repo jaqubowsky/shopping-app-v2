@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  updateProfile,
 } from "firebase/auth";
 import {
   getFirestore,
@@ -18,7 +19,7 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCxrZy74N6oge5u3TZZIxk6JHTEE2FixC8",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "shopping-app-v2-af858.firebaseapp.com",
   projectId: "shopping-app-v2-af858",
   storageBucket: "shopping-app-v2-af858.appspot.com",
@@ -61,13 +62,14 @@ const logInWithEmailAndPassword = async (email, password) => {
   }
 };
 
-const registerWithEmailAndPassword = async (email, password) => {
+const registerWithEmailAndPassword = async (email, password, name) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
+    await updateProfile(user, { displayName: name });
     await addDoc(collection(db, "users"), {
       uuid: user.uid,
-      name,
+      name: name,
       authProvider: "local",
       email,
     });
