@@ -80,11 +80,7 @@ const sendPasswordReset = async (email: string) => {
 };
 
 const logOut = async () => {
-  try {
-    await signOut(auth);
-  } catch (err) {
-    reportError({ message: getErrorMessage(err) });
-  }
+  await signOut(auth);
 };
 
 export {
