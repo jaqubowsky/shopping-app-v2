@@ -1,14 +1,17 @@
 import { motion } from "framer-motion";
 import { PropsWithChildren } from "react";
+import { useEscapeKey } from "../../hooks/useEscapeKey";
 
 type ModalWrapperProps = {
-  handleCloseModal: React.MouseEventHandler<HTMLDivElement>;
+  handleCloseModal: () => void;
 };
 
 function ModalWrapper({
   children,
   handleCloseModal,
 }: PropsWithChildren<ModalWrapperProps>) {
+  useEscapeKey(handleCloseModal);
+
   return (
     <motion.div
       id="modal"
