@@ -58,9 +58,15 @@ function Reset({ error, success, setSuccess, setError, setClose }: ResetProps) {
           <Input
             size="lg"
             label="Email"
-            {...register("email", { required: true })}
+            {...register("email", { required: "Email is required" })}
           />
-          {errors.email && <Error message="Email is required" />}
+          {errors.email && (
+            <Error
+              message={
+                errors.email.message ? errors.email.message : "Undefined error"
+              }
+            />
+          )}
         </div>
         <Button
           type="submit"

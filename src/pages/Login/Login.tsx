@@ -52,16 +52,36 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
             type="email"
             size="lg"
             label="Email"
-            {...register("email", { required: true })}
+            {...register("email", { required: "Email is required" })}
           />
-          {errors.email && <Error message="Email is required" />}
+          {errors.email && (
+            <Error
+              message={
+                errors.email.message ? errors.email.message : "Undefined error"
+              }
+            />
+          )}
           <Input
             type="password"
             size="lg"
             label="Password"
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: "Password is required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Entered value does not match email format",
+              },
+            })}
           />
-          {errors.password && <Error message="Password is required" />}
+          {errors.password && (
+            <Error
+              message={
+                errors.password.message
+                  ? errors.password.message
+                  : "Undefined error"
+              }
+            />
+          )}
         </div>
         <Button className="mt-6" type="submit" color="amber" fullWidth>
           Login
