@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { Error } from "../../components/Error";
 import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { validationInfo } from "./validationInfo";
 
 type Inputs = {
   e?: Event;
@@ -52,12 +53,20 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
             type="email"
             size="lg"
             label="Email"
-            {...register("email", { required: "Email is required" })}
+            {...register("email", {
+              required: validationInfo.required.email,
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: validationInfo.notMatch.email,
+              },
+            })}
           />
           {errors.email && (
             <Error
               message={
-                errors.email.message ? errors.email.message : "Undefined error"
+                errors.email.message
+                  ? errors.email.message
+                  : validationInfo.undefined
               }
             />
           )}
@@ -66,11 +75,7 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
             size="lg"
             label="Password"
             {...register("password", {
-              required: "Password is required",
-              pattern: {
-                value: /\S+@\S+\.\S+/,
-                message: "Entered value does not match email format",
-              },
+              required: validationInfo.required.password,
             })}
           />
           {errors.password && (
@@ -78,7 +83,7 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
               message={
                 errors.password.message
                   ? errors.password.message
-                  : "Undefined error"
+                  : validationInfo.undefined
               }
             />
           )}
