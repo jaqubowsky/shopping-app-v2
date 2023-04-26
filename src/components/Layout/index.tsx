@@ -6,7 +6,13 @@ import UserIcon from "../../pages/Login/UserIcon";
 import UserOptionsModal from "../../pages/Login/UserOptionsModal";
 import CartIcon from "../../pages/Cart/CartIcon";
 
-export default function Layout() {
+type LayoutProps = {
+  error: string;
+  setError: React.Dispatch<React.SetStateAction<string>>;
+  setClose: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+export default function Layout({ setError, setClose, error }: LayoutProps) {
   const [showCart, setShowCart] = useState(false);
   const [showLoginDropdown, setShowLoginDropdown] = useState(false);
 
@@ -34,6 +40,9 @@ export default function Layout() {
       <UserOptionsModal
         toggleLoginDropdown={toggleLoginDropdown}
         showLoginDropdown={showLoginDropdown}
+        error={error}
+        setError={setError}
+        setClose={setClose}
       />
       <CartModal toggleCart={toggleCart} showCart={showCart} />
     </>
