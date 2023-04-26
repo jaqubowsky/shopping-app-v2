@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 import { useState } from "react";
 import CartModal from "../../pages/Cart/CartModal";
 import UserIcon from "../../pages/Login/UserIcon";
-import LoginModal from "../../pages/Login/LoginModal";
+import UserOptionsModal from "../../pages/Login/UserOptionsModal";
 import CartIcon from "../../pages/Cart/CartIcon";
 
 export default function Layout() {
@@ -20,7 +20,7 @@ export default function Layout() {
 
   return (
     <>
-      <header className="bg-yellow-400 p-6">
+      <header className="bg-yellow-600 p-6">
         <NavBar>
           <CartIcon toggleCart={toggleCart} />
           <UserIcon toggleLoginDropdown={toggleLoginDropdown} />
@@ -31,7 +31,7 @@ export default function Layout() {
         <Outlet />
       </main>
 
-      <LoginModal
+      <UserOptionsModal
         toggleLoginDropdown={toggleLoginDropdown}
         showLoginDropdown={showLoginDropdown}
       />
