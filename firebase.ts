@@ -17,9 +17,10 @@ import {
   where,
   addDoc,
 } from "firebase/firestore";
+import { getErrorMessage } from "./src/utils/getErrorMessage";
 
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY as string,
   authDomain: "shopping-app-v2-af858.firebaseapp.com",
   projectId: "shopping-app-v2-af858",
   storageBucket: "shopping-app-v2-af858.appspot.com",
@@ -50,48 +51,39 @@ const signInWithGoogle = async () => {
       });
     }
   } catch (err) {
-    throw new Error(err.message);
+    reportError({ message: getErrorMessage(err) });
   }
 };
 
-const logInWithEmailAndPassword = async (email, password) => {
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    throw new Error(err.message);
-  }
+const logInWithEmailAndPassword = async (email: string, password: string) => {
+  await signInWithEmailAndPassword(auth, email, password);
 };
 
-const registerWithEmailAndPassword = async (email, password, name) => {
-  try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
-    await updateProfile(user, { displayName: name });
-    await addDoc(collection(db, "users"), {
-      uuid: user.uid,
-      name: name,
-      authProvider: "local",
-      email,
-    });
-  } catch (err) {
-    throw new Error(err.message);
-  }
+const registerWithEmailAndPassword = async (
+  email: string,
+  password: string,
+  name: string
+) => {
+  const res = await createUserWithEmailAndPassword(auth, email, password);
+  const user = res.user;
+  await updateProfile(user, { displayName: name });
+  await addDoc(collection(db, "users"), {
+    uuid: user.uid,
+    name: name,
+    authProvider: "local",
+    email,
+  });
 };
 
-const sendPasswordReset = async (email) => {
-  try {
-    await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent!");
-  } catch (err) {
-    throw new Error(err.message);
-  }
+const sendPasswordReset = async (email: string) => {
+  await sendPasswordResetEmail(auth, email);
 };
 
 const logOut = async () => {
   try {
     await signOut(auth);
   } catch (err) {
-    throw new Error(err.message);
+    reportError({ message: getErrorMessage(err) });
   }
 };
 
