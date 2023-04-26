@@ -15,6 +15,7 @@ type Inputs = {
   username: string;
   email: string;
   password: string;
+  cpassword: string;
 };
 
 type RegisterProps = {
@@ -27,8 +28,10 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<Inputs>();
+
   const onSubmit: SubmitHandler<Inputs> = async (
     { email, password, username },
     e
@@ -59,23 +62,79 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             type="text"
             size="lg"
             label="Username"
-            {...register("username", { required: true })}
+            {...register("username", { required: "Username is required" })}
           />
-          {errors.username && <Error message="Username is required" />}
+          {errors.username && (
+            <Error
+              message={
+                errors.username.message
+                  ? errors.username.message
+                  : "Undefined error"
+              }
+            />
+          )}
           <Input
             type="email"
             size="lg"
             label="Email"
-            {...register("email", { required: true })}
+            {...register("email", {
+              required: true,
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Entered value does not match email format",
+              },
+            })}
           />
-          {errors.email && <Error message="Email is required" />}
+          {errors.email && (
+            <Error
+              message={
+                errors.email.message ? errors.email.message : "Undefined error"
+              }
+            />
+          )}
           <Input
             type="password"
             size="lg"
             label="Password"
-            {...register("password", { required: true })}
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 8,
+                message: "Password must have at least 8 characters",
+              },
+            })}
           />
-          {errors.password && <Error message="Password is required" />}
+          {errors.password && (
+            <Error
+              message={
+                errors.password.message
+                  ? errors.password.message
+                  : "Undefined error"
+              }
+            />
+          )}
+          <Input
+            type="password"
+            size="lg"
+            label="Verify password"
+            {...register("cpassword", {
+              required: "Matching password is required",
+              validate: (val: string) => {
+                if (watch("password") != val) {
+                  return "You need to provide matching password!";
+                }
+              },
+            })}
+          />
+          {errors.cpassword && (
+            <Error
+              message={
+                errors.cpassword.message
+                  ? errors.cpassword.message
+                  : "Undefined error"
+              }
+            />
+          )}
         </div>
         <Button className="mt-6" type="submit" color="amber" fullWidth>
           Register
