@@ -8,14 +8,21 @@ type CartModalProps = {
 };
 
 export default function CartModal({ toggleCart, showCart }: CartModalProps) {
+  const animationVariants = {
+    initial: { x: -1500 },
+    animate: { x: 0, transition: { duration: 0.3 } },
+    exit: { x: 1500, transition: { duration: 0.3 } },
+  };
+
   return (
     <ModalPortal toggleModal={toggleCart} showModal={showCart}>
       <ModalWrapper handleCloseModal={toggleCart}>
         <motion.div
           key="modal"
-          initial={{ x: -1500 }}
-          animate={{ x: 0, transition: { duration: 0.3 } }}
-          exit={{ x: 1500, transition: { duration: 0.3 } }}
+          variants={animationVariants}
+          initial="initial"
+          animate="animate"
+          exit="exit"
           onClick={(e) => e.stopPropagation()}
           className="flex-col items-center rounded-lg bg-white p-6 text-center shadow-lg"
         >
