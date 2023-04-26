@@ -9,6 +9,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { Error } from "../../components/Error";
 import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { validationInfo } from "./validationInfo";
 
 type Inputs = {
   e?: Event;
@@ -62,14 +63,14 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             type="text"
             size="lg"
             label="Username"
-            {...register("username", { required: "Username is required" })}
+            {...register("username", { required: validationInfo.required.username })}
           />
           {errors.username && (
             <Error
               message={
                 errors.username.message
                   ? errors.username.message
-                  : "Undefined error"
+                  : validationInfo.undefined
               }
             />
           )}
@@ -81,14 +82,14 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
               required: true,
               pattern: {
                 value: /\S+@\S+\.\S+/,
-                message: "Entered value does not match email format",
+                message: validationInfo.notMatch.email,
               },
             })}
           />
           {errors.email && (
             <Error
               message={
-                errors.email.message ? errors.email.message : "Undefined error"
+                errors.email.message ? errors.email.message : validationInfo.undefined
               }
             />
           )}
@@ -97,10 +98,10 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             size="lg"
             label="Password"
             {...register("password", {
-              required: "Password is required",
+              required: validationInfo.required.password,
               minLength: {
                 value: 8,
-                message: "Password must have at least 8 characters",
+                message: validationInfo.notLongEnough.password
               },
             })}
           />
@@ -109,7 +110,7 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
               message={
                 errors.password.message
                   ? errors.password.message
-                  : "Undefined error"
+                  : validationInfo.undefined
               }
             />
           )}
@@ -118,10 +119,10 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             size="lg"
             label="Verify password"
             {...register("cpassword", {
-              required: "Matching password is required",
+              required: validationInfo.required.cpassword,
               validate: (val: string) => {
                 if (watch("password") != val) {
-                  return "You need to provide matching password!";
+                  return validationInfo.notMatch.password;
                 }
               },
             })}
@@ -131,7 +132,7 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
               message={
                 errors.cpassword.message
                   ? errors.cpassword.message
-                  : "Undefined error"
+                  : validationInfo.undefined
               }
             />
           )}

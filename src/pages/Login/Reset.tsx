@@ -5,6 +5,7 @@ import { onPromise } from "../../utils/onPromise";
 import { Error } from "../../components/Error";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { validationInfo } from "./validationInfo";
 
 type Inputs = {
   e?: Event;
@@ -58,12 +59,12 @@ function Reset({ error, success, setSuccess, setError, setClose }: ResetProps) {
           <Input
             size="lg"
             label="Email"
-            {...register("email", { required: "Email is required" })}
+            {...register("email", { required: validationInfo.required.email })}
           />
           {errors.email && (
             <Error
               message={
-                errors.email.message ? errors.email.message : "Undefined error"
+                errors.email.message ? errors.email.message : validationInfo.undefined
               }
             />
           )}
