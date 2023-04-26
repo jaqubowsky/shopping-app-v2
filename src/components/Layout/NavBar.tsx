@@ -2,6 +2,7 @@ import { NavLink, Link } from "react-router-dom";
 import { PropsWithChildren } from "react";
 
 function NavBar({ children }: PropsWithChildren) {
+
   const getActiveStyles = (isActive: boolean) => {
     return isActive
       ? "scale-105 border-b-2 border-b-white"
