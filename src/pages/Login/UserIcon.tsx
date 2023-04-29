@@ -10,17 +10,19 @@ function UserIcon({ toggleLoginDropdown }: UserIconProps) {
   const [user] = useAuthState(auth);
   const userPhoto = user?.photoURL;
 
+  const handleEnterPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter") {
+      toggleLoginDropdown();
+      e.stopPropagation();
+    }
+    return;
+  };
+
   return (
     <div
       tabIndex={0}
       role="button"
-      onKeyDown={(e) => {
-        if (e.key === "Enter") {
-          toggleLoginDropdown();
-          e.stopPropagation();
-        }
-        return;
-      }}
+      onKeyDown={handleEnterPress}
       className="relative flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white p-4 text-center shadow-md"
       onClick={(e) => {
         toggleLoginDropdown();
