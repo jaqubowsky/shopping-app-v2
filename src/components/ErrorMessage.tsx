@@ -4,7 +4,7 @@ type ErrorProps = {
   message: string;
 };
 
-export function Error({ message }: ErrorProps) {
+export function ErrorMessage({ message }: ErrorProps) {
   return (
     <motion.span
       animate={{ x: [-10, 10, -10, 10, 0], transition: { duration: 0.25 } }}
