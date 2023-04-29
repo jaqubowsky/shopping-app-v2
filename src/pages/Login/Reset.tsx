@@ -2,9 +2,8 @@ import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { sendPasswordReset } from "../../../firebase";
 import { onPromise } from "../../utils/onPromise";
-import { Error } from "../../components/Error";
-import { getErrorMessage } from "../../utils/getErrorMessage";
-import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { ErrorMessage } from "../../components/ErrorMessage";
+import { useErrorBoundary } from "react-error-boundary";
 import { validationInfo } from "./validationInfo";
 
 type Inputs = {
@@ -12,15 +11,7 @@ type Inputs = {
   email: string;
 };
 
-type ResetProps = {
-  error: string;
-  success: string;
-  setSuccess: React.Dispatch<React.SetStateAction<string>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  setClose: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-function Reset({ error, success, setSuccess, setError, setClose }: ResetProps) {
+function Reset() {
   const {
     register,
     handleSubmit,
@@ -29,15 +20,14 @@ function Reset({ error, success, setSuccess, setError, setClose }: ResetProps) {
     formState: { errors },
   } = useForm<Inputs>();
 
+  const { showBoundary } = useErrorBoundary();
+
   const onSubmit: SubmitHandler<Inputs> = async ({ email }, e) => {
     e?.preventDefault();
     try {
       await sendPasswordReset(email);
-      setSuccess("Reset link has been sent to your email.");
     } catch (err) {
-      reportError({ message: getErrorMessage(err) });
-      setError(getErrorMessage(err));
-      setClose(false);
+      showBoundary(err);
     } finally {
       reset();
     }
@@ -62,9 +52,11 @@ function Reset({ error, success, setSuccess, setError, setClose }: ResetProps) {
             {...register("email", { required: validationInfo.required.email })}
           />
           {errors.email && (
-            <Error
+            <ErrorMessage
               message={
-                errors.email.message ? errors.email.message : validationInfo.undefined
+                errors.email.message
+                  ? errors.email.message
+                  : validationInfo.undefined
               }
             />
           )}
@@ -79,21 +71,6 @@ function Reset({ error, success, setSuccess, setError, setClose }: ResetProps) {
           Reset
         </Button>
       </form>
-      {error && (
-        <CustomAlert
-          message={error}
-          setMessage={setError}
-          setClose={setClose}
-          error
-        />
-      )}
-      {success && (
-        <CustomAlert
-          message={success}
-          setMessage={setSuccess}
-          setClose={setClose}
-        />
-      )}
     </Card>
   );
 }

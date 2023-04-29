@@ -6,10 +6,9 @@ import {
 import { Link } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { getErrorMessage } from "../../utils/getErrorMessage";
-import { Error } from "../../components/Error";
-import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
+import { useErrorBoundary } from "react-error-boundary";
 
 type Inputs = {
   e?: Event;
@@ -19,19 +18,15 @@ type Inputs = {
   cpassword: string;
 };
 
-type RegisterProps = {
-  error: string;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  setClose: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export default function Register({ error, setClose, setError }: RegisterProps) {
+export default function Register() {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const { showBoundary } = useErrorBoundary();
 
   const onSubmit: SubmitHandler<Inputs> = async (
     { email, password, username },
@@ -41,8 +36,7 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
     try {
       await registerWithEmailAndPassword(email, password, username);
     } catch (err) {
-      setError(getErrorMessage(err));
-      setClose(false);
+      showBoundary(err);
     }
   };
 
@@ -63,10 +57,12 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             type="text"
             size="lg"
             label="Username"
-            {...register("username", { required: validationInfo.required.username })}
+            {...register("username", {
+              required: validationInfo.required.username,
+            })}
           />
           {errors.username && (
-            <Error
+            <ErrorMessage
               message={
                 errors.username.message
                   ? errors.username.message
@@ -87,9 +83,11 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             })}
           />
           {errors.email && (
-            <Error
+            <ErrorMessage
               message={
-                errors.email.message ? errors.email.message : validationInfo.undefined
+                errors.email.message
+                  ? errors.email.message
+                  : validationInfo.undefined
               }
             />
           )}
@@ -101,12 +99,12 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
               required: validationInfo.required.password,
               minLength: {
                 value: 8,
-                message: validationInfo.notLongEnough.password
+                message: validationInfo.notLongEnough.password,
               },
             })}
           />
           {errors.password && (
-            <Error
+            <ErrorMessage
               message={
                 errors.password.message
                   ? errors.password.message
@@ -128,7 +126,7 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
             })}
           />
           {errors.cpassword && (
-            <Error
+            <ErrorMessage
               message={
                 errors.cpassword.message
                   ? errors.cpassword.message
@@ -159,14 +157,6 @@ export default function Register({ error, setClose, setError }: RegisterProps) {
           </Link>
         </Typography>
       </form>
-      {error && (
-        <CustomAlert
-          message={error}
-          setMessage={setError}
-          setClose={setClose}
-          error
-        />
-      )}
     </Card>
   );
 }

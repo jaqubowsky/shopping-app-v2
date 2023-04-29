@@ -3,10 +3,9 @@ import { logInWithEmailAndPassword, signInWithGoogle } from "../../../firebase";
 import { Link } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { getErrorMessage } from "../../utils/getErrorMessage";
-import { Error } from "../../components/Error";
-import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
+import {useErrorBoundary} from "react-error-boundary";
 
 type Inputs = {
   e?: Event;
@@ -14,25 +13,21 @@ type Inputs = {
   password: string;
 };
 
-type RegisterProps = {
-  error: string;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  setClose: React.Dispatch<React.SetStateAction<boolean>>;
-};
-
-export default function Login({ error, setClose, setError }: RegisterProps) {
+export default function Login() {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
+
+  const { showBoundary } = useErrorBoundary();
+
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }, e) => {
     e?.preventDefault();
     try {
       await logInWithEmailAndPassword(email, password);
     } catch (err) {
-      setError(getErrorMessage(err));
-      setClose(false);
+      showBoundary(err);
     }
   };
 
@@ -62,7 +57,7 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
             })}
           />
           {errors.email && (
-            <Error
+            <ErrorMessage
               message={
                 errors.email.message
                   ? errors.email.message
@@ -79,7 +74,7 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
             })}
           />
           {errors.password && (
-            <Error
+            <ErrorMessage
               message={
                 errors.password.message
                   ? errors.password.message
@@ -120,14 +115,6 @@ export default function Login({ error, setClose, setError }: RegisterProps) {
           </Link>
         </Typography>
       </form>
-      {error && (
-        <CustomAlert
-          message={error}
-          setMessage={setError}
-          setClose={setClose}
-          error
-        />
-      )}
     </Card>
   );
 }

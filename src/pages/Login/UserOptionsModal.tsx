@@ -7,29 +7,24 @@ import { logOut } from "../../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../../firebase";
 import { onPromise } from "../../utils/onPromise";
-import { getErrorMessage } from "../../utils/getErrorMessage";
-import { CustomAlert } from "../../components/PopUp/CustomAlert";
+import { useErrorBoundary } from "react-error-boundary";
 
 type UserOptionsModal = {
   toggleLoginDropdown: () => void;
   showLoginDropdown: boolean;
-  error: string;
-  setError: React.Dispatch<React.SetStateAction<string>>;
-  setClose: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function UserOptionsModal({
   toggleLoginDropdown,
   showLoginDropdown,
-  setError,
-  setClose,
-  error,
 }: UserOptionsModal) {
   const animationVariants = {
     initial: { x: 1000 },
     animate: { x: 0, transition: { duration: 0.5 } },
     exit: { x: 1000, transition: { duration: 0.5 } },
   };
+
+  const { showBoundary } = useErrorBoundary();
 
   const [user] = useAuthState(auth);
   const userName = user?.displayName?.split(" ")[0];
@@ -38,8 +33,7 @@ function UserOptionsModal({
     try {
       await logOut();
     } catch (err) {
-      setError(getErrorMessage(err));
-      setClose(false);
+      showBoundary(err);
     } finally {
       toggleLoginDropdown();
     }
@@ -91,14 +85,6 @@ function UserOptionsModal({
           </motion.div>
         </ModalWrapper>
       </ModalPortal>
-      {error && (
-        <CustomAlert
-          message={error}
-          setMessage={setError}
-          setClose={setClose}
-          error
-        />
-      )}
     </>
   );
 }

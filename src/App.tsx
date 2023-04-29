@@ -16,19 +16,24 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebase";
 import Profile from "./pages/Profile";
 import Reset from "./pages/Login/Reset";
-import { useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorBoundaryFallback from "./components/PopUp/ErrorBoundaryFallback";
 
 function App() {
   const [user] = useAuthState(auth);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setClose] = useState(false);
-  const [success, setSuccess] = useState("");
-  const [error, setError] = useState("");
 
   const routes = createRoutesFromChildren(
     <Route
       path="/"
-      element={<Layout setError={setError} setClose={setClose} error={error} />}
+      element={
+        <ErrorBoundary
+          fallbackRender={(props) => (
+            <ErrorBoundaryFallback {...props} childComponent={<Layout />} />
+          )}
+        >
+          <Layout />
+        </ErrorBoundary>
+      }
     >
       <Route index element={<Home />} />
       <Route path="products" element={<Products />} />
@@ -37,7 +42,13 @@ function App() {
         path="login"
         element={
           <ProtectedRoute isUserLoggedIn={user ? true : false}>
-            <Login error={error} setClose={setClose} setError={setError} />
+            <ErrorBoundary
+              fallbackRender={(props) => (
+                <ErrorBoundaryFallback {...props} childComponent={<Login />} />
+              )}
+            >
+              <Login />
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -45,13 +56,13 @@ function App() {
         path="login/reset-password"
         element={
           <ProtectedRoute isUserLoggedIn={user ? true : false}>
-            <Reset
-              error={error}
-              setClose={setClose}
-              setError={setError}
-              success={success}
-              setSuccess={setSuccess}
-            />
+            <ErrorBoundary
+              fallbackRender={(props) => (
+                <ErrorBoundaryFallback {...props} childComponent={<Reset />} />
+              )}
+            >
+              <Reset />
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -59,7 +70,13 @@ function App() {
         path="register"
         element={
           <ProtectedRoute isUserLoggedIn={user ? true : false}>
-            <Register error={error} setClose={setClose} setError={setError} />
+            <ErrorBoundary
+              fallbackRender={(props) => (
+                <ErrorBoundaryFallback {...props} childComponent={<Register />} />
+              )}
+            >
+              <Register />
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
@@ -67,7 +84,13 @@ function App() {
         path="profile"
         element={
           <ProtectedRoute isUserLoggedIn={user ? false : true}>
-            <Profile />
+            <ErrorBoundary
+              fallbackRender={(props) => (
+                <ErrorBoundaryFallback {...props} childComponent={<Profile />} />
+              )}
+            >
+              <Profile />
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
