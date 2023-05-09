@@ -1,14 +1,13 @@
 import { BiUser } from "react-icons/bi";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase";
+import useLoginStatus from "../../hooks/useLoginStatus";
 
 type UserIconProps = {
   toggleLoginDropdown: () => void;
 };
 
 function UserIcon({ toggleLoginDropdown }: UserIconProps) {
-  const [user] = useAuthState(auth);
-  const userPhoto = user?.photoURL;
+  const { user } = useLoginStatus();
+  console.log(user)
 
   const handleEnterPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
@@ -29,11 +28,11 @@ function UserIcon({ toggleLoginDropdown }: UserIconProps) {
         e.stopPropagation();
       }}
     >
-      {userPhoto ? (
+      {user?.picture ? (
         <img
           role="presentation"
           className="scale-105 rounded-full"
-          src={userPhoto}
+          src={user.picture}
           alt="user"
         />
       ) : (

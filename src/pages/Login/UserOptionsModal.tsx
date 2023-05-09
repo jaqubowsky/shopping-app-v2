@@ -1,17 +1,16 @@
 import ModalPortal from "../../components/Modal/ModalPortal";
 import ModalWrapper from "../../components/Modal/ModalWrapper";
-import { capitalizeFirst } from "../../utils/capitalize";
 import { motion } from "framer-motion";
-import { NavLink } from "react-router-dom";
-import { logOut } from "../../../firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase";
-import { onPromise } from "../../utils/onPromise";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useErrorBoundary } from "react-error-boundary";
+import { signOut } from "../../api/userApi";
+import { onPromise } from "../../utils/onPromise";
+import useLoginStatus from "../../hooks/useLoginStatus";
 
 type UserOptionsModal = {
   toggleLoginDropdown: () => void;
   showLoginDropdown: boolean;
+  user: { username: string; email: string; picture: string };
 };
 
 function UserOptionsModal({
@@ -26,12 +25,15 @@ function UserOptionsModal({
 
   const { showBoundary } = useErrorBoundary();
 
-  const [user] = useAuthState(auth);
-  const userName = user?.displayName?.split(" ")[0];
+  const { user } = useLoginStatus();
+  const isLoggedIn = user ? true : false;
+
+  const navigate = useNavigate();
 
   async function logOutUser() {
     try {
-      await logOut();
+      await signOut();
+      navigate(0);
     } catch (err) {
       showBoundary(err);
     } finally {
@@ -55,28 +57,26 @@ function UserOptionsModal({
             className="absolute right-0 top-0 h-full bg-white p-10 text-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            {user && (
-              <h1 className="mb-6">
-                Hello{userName ? `, ${capitalizeFirst(userName)}` : ""}!
-              </h1>
-            )}
+            {isLoggedIn ? (
+              <h1 className="mb-6">Hello {user?.username}!</h1>
+            ) : null}
             <ul className="flex flex-col gap-6">
-              {!user ? (
+              {!isLoggedIn ? (
                 <NavLink onClick={toggleLoginDropdown} to="login">
                   Login
                 </NavLink>
               ) : null}
-              {!user ? (
+              {!isLoggedIn ? (
                 <NavLink onClick={toggleLoginDropdown} to="register">
                   Register
                 </NavLink>
               ) : null}
-              {user ? (
+              {isLoggedIn ? (
                 <NavLink onClick={toggleLoginDropdown} to="profile">
                   Profile
                 </NavLink>
               ) : null}
-              {user ? (
+              {isLoggedIn ? (
                 <NavLink to="." onClick={onPromise(logOutUser)}>
                   Logout
                 </NavLink>

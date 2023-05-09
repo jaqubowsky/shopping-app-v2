@@ -15,6 +15,8 @@
     "@heroicons/react": "^2.0.17",
     "@material-tailwind/react": "^1.4.2",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tanstack/react-query": "^4.29.5",
+    "axios": "^1.4.0",
     "firebase": "^9.20.0",
     "framer-motion": "^10.12.4",
     "react": "^18.2.0",
