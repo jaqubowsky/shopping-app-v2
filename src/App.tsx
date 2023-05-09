@@ -12,15 +12,18 @@ import Register from "./pages/Login/Register";
 import Login from "./pages/Login/Login";
 import { ThemeProvider } from "@material-tailwind/react";
 import ProtectedRoute from "./components/ProtectedRoute";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebase";
 import Profile from "./pages/Profile";
 import Reset from "./pages/Login/Reset";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorBoundaryFallback from "./components/PopUp/ErrorBoundaryFallback";
+import useLoginStatus from "./hooks/useLoginStatus";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
-  const [user] = useAuthState(auth);
+  const client = new QueryClient();
+
+  const { user } = useLoginStatus();
+  const isLoggedIn = user ? true : false;
 
   const routes = createRoutesFromChildren(
     <Route
@@ -41,7 +44,7 @@ function App() {
       <Route
         path="login"
         element={
-          <ProtectedRoute isUserLoggedIn={user ? true : false}>
+          <ProtectedRoute isUserLoggedIn={!isLoggedIn}>
             <ErrorBoundary
               fallbackRender={(props) => (
                 <ErrorBoundaryFallback {...props} childComponent={<Login />} />
@@ -55,7 +58,7 @@ function App() {
       <Route
         path="login/reset-password"
         element={
-          <ProtectedRoute isUserLoggedIn={user ? true : false}>
+          <ProtectedRoute isUserLoggedIn={!isLoggedIn}>
             <ErrorBoundary
               fallbackRender={(props) => (
                 <ErrorBoundaryFallback {...props} childComponent={<Reset />} />
@@ -69,10 +72,13 @@ function App() {
       <Route
         path="register"
         element={
-          <ProtectedRoute isUserLoggedIn={user ? true : false}>
+          <ProtectedRoute isUserLoggedIn={!isLoggedIn}>
             <ErrorBoundary
               fallbackRender={(props) => (
-                <ErrorBoundaryFallback {...props} childComponent={<Register />} />
+                <ErrorBoundaryFallback
+                  {...props}
+                  childComponent={<Register />}
+                />
               )}
             >
               <Register />
@@ -83,10 +89,13 @@ function App() {
       <Route
         path="profile"
         element={
-          <ProtectedRoute isUserLoggedIn={user ? false : true}>
+          <ProtectedRoute isUserLoggedIn={isLoggedIn}>
             <ErrorBoundary
               fallbackRender={(props) => (
-                <ErrorBoundaryFallback {...props} childComponent={<Profile />} />
+                <ErrorBoundaryFallback
+                  {...props}
+                  childComponent={<Profile />}
+                />
               )}
             >
               <Profile />
@@ -101,7 +110,9 @@ function App() {
 
   return (
     <ThemeProvider>
-      <RouterProvider router={router} />
+      <QueryClientProvider client={client}>
+        <RouterProvider router={router} />
+      </QueryClientProvider>
     </ThemeProvider>
   );
 }
