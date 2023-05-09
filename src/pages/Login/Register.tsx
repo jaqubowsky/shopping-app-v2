@@ -1,8 +1,5 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
-import {
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-} from "../../../firebase";
+import { registerWithEmailAndPassword } from "../../api/userApi";
 import { Link } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -34,7 +31,8 @@ export default function Register() {
   ) => {
     e?.preventDefault();
     try {
-      await registerWithEmailAndPassword(email, password, username);
+      const registerValues = { email, password, username };
+      await registerWithEmailAndPassword(registerValues);
     } catch (err) {
       showBoundary(err);
     }
@@ -137,14 +135,6 @@ export default function Register() {
         </div>
         <Button className="mt-6" type="submit" color="amber" fullWidth>
           Register
-        </Button>
-        <Button
-          className="mt-6"
-          color="amber"
-          onClick={onPromise(signInWithGoogle)}
-          fullWidth
-        >
-          Register with Google
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal">
           Already have an account?{" "}
