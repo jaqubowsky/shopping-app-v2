@@ -1,11 +1,11 @@
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
-import { logInWithEmailAndPassword, signInWithGoogle } from "../../../firebase";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
-import {useErrorBoundary} from "react-error-boundary";
+import { useErrorBoundary } from "react-error-boundary";
+import { loginWithEmailAndPassword } from "../../api/userApi";
 
 type Inputs = {
   e?: Event;
@@ -19,13 +19,16 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-
   const { showBoundary } = useErrorBoundary();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }, e) => {
     e?.preventDefault();
     try {
-      await logInWithEmailAndPassword(email, password);
+      const loginValues = { email, password };
+      await loginWithEmailAndPassword(loginValues);
+      navigate("/");
+      navigate(0);
     } catch (err) {
       showBoundary(err);
     }
@@ -85,14 +88,6 @@ export default function Login() {
         </div>
         <Button className="mt-6" type="submit" color="amber" fullWidth>
           Login
-        </Button>
-        <Button
-          className="mt-6"
-          color="amber"
-          onClick={onPromise(signInWithGoogle)}
-          fullWidth
-        >
-          Login with Google
         </Button>
         <Typography color="gray" className="mt-4 text-center font-normal">
           Do not have an account?{" "}
