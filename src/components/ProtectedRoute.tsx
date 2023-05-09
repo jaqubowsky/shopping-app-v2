@@ -12,7 +12,7 @@ const ProtectedRoute = ({
   children,
 }: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
   
-  if (isUserLoggedIn) {
+  if (!isUserLoggedIn) {
     return <Navigate to={redirectPath} replace />;
   }
   return <>{children}</>;
