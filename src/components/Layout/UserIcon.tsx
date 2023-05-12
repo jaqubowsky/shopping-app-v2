@@ -6,8 +6,9 @@ type UserIconProps = {
 };
 
 function UserIcon({ toggleLoginDropdown }: UserIconProps) {
-  const { user } = useLoginStatus();
-  console.log(user)
+  const { userData } = useLoginStatus();
+
+  const user = userData?.user;
 
   const handleEnterPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
@@ -22,17 +23,17 @@ function UserIcon({ toggleLoginDropdown }: UserIconProps) {
       tabIndex={0}
       role="button"
       onKeyDown={handleEnterPress}
-      className="relative flex h-16 w-16 cursor-pointer items-center justify-center rounded-full bg-white p-4 text-center shadow-md"
+      className="relative flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-white p-4 text-center shadow-md"
       onClick={(e) => {
         toggleLoginDropdown();
         e.stopPropagation();
       }}
     >
-      {user?.picture ? (
+      {user?.imageUrl ? (
         <img
           role="presentation"
-          className="scale-105 rounded-full"
-          src={user.picture}
+          className="scale-150 rounded-full"
+          src={user?.imageUrl}
           alt="user"
         />
       ) : (
