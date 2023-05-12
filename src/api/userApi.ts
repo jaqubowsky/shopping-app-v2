@@ -1,6 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { LoginValues, RegisterValues, User, UserObject } from "../types/user";
-import { AxiosError } from "axios";
+import { LoginValues, RegisterValues, UserResponse } from "../types/user";
 
 const API_URL = "http://localhost:3001";
 
@@ -16,38 +15,38 @@ export const registerWithEmailAndPassword = async (
     await api.post("/register", registerValues);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
-      const axiosError = err as AxiosError;
       // eslint-disable-next-line
-      throw new Error(axiosError.request?.response);
+      throw new Error(err.response?.data);
     } else {
       throw new Error("Unexpected error");
     }
   }
 };
 
-export const loginWithEmailAndPassword = async (loginValues: LoginValues) => {
+export const loginWithEmailAndPassword = async (formValues: LoginValues) => {
   try {
-    await api.post("/login", loginValues);
+    await api.post("/login", formValues);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
-      throw new Error(err.request?.response);
+      throw new Error(err.response?.data.message);
     } else {
       throw new Error("Unexpected error");
     }
   }
 };
 
-export const checkLoginStatus = async (): Promise<UserObject> => {
+export const checkLoginStatus = async (): Promise<UserResponse> => {
   try {
-    const response: AxiosResponse<User> = await api.get("/logged-in");
-
-    const user = response.data;
-    return user;
+    const response: AxiosResponse<UserResponse> = await api.get("/logged-in");
+    const userData = response.data;
+    console.log(userData)
+    return userData;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
+      console.log(err.response);
       // eslint-disable-next-line
-      throw new Error(err.request?.response);
+      throw new Error(err.response?.data);
     } else {
       throw new Error("Unexpected error");
     }
@@ -60,7 +59,7 @@ export const signOut = async () => {
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
-      throw new Error(err.request?.response);
+      throw new Error(err.response?.data);
     } else {
       throw new Error("Unexpected error");
     }
