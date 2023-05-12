@@ -13,17 +13,19 @@ import Login from "./pages/Login/Login";
 import { ThemeProvider } from "@material-tailwind/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
-import Reset from "./pages/Login/Reset";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorBoundaryFallback from "./components/PopUp/ErrorBoundaryFallback";
 import useLoginStatus from "./hooks/useLoginStatus";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import MyProducts from "./pages/Profile/MyProducts";
+import AddProduct from "./pages/AddProduct";
 
 function App() {
-  const client = new QueryClient();
+  const client = new QueryClient({});
 
-  const { user } = useLoginStatus();
-  const isLoggedIn = user ? true : false;
+  const { userData } = useLoginStatus();
+
+  const isLoggedIn = userData?.user ? true : false;
 
   const routes = createRoutesFromChildren(
     <Route
@@ -56,20 +58,6 @@ function App() {
         }
       />
       <Route
-        path="login/reset-password"
-        element={
-          <ProtectedRoute isUserLoggedIn={!isLoggedIn}>
-            <ErrorBoundary
-              fallbackRender={(props) => (
-                <ErrorBoundaryFallback {...props} childComponent={<Reset />} />
-              )}
-            >
-              <Reset />
-            </ErrorBoundary>
-          </ProtectedRoute>
-        }
-      />
-      <Route
         path="register"
         element={
           <ProtectedRoute isUserLoggedIn={!isLoggedIn}>
@@ -87,6 +75,23 @@ function App() {
         }
       />
       <Route
+        path="add-product"
+        element={
+          <ProtectedRoute isUserLoggedIn={isLoggedIn}>
+            <ErrorBoundary
+              fallbackRender={(props) => (
+                <ErrorBoundaryFallback
+                  {...props}
+                  childComponent={<MyProducts />}
+                />
+              )}
+            >
+              <AddProduct />
+            </ErrorBoundary>
+          </ProtectedRoute>
+        }
+      />
+      <Route
         path="profile"
         element={
           <ProtectedRoute isUserLoggedIn={isLoggedIn}>
@@ -99,6 +104,23 @@ function App() {
               )}
             >
               <Profile />
+            </ErrorBoundary>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="profile/my-products"
+        element={
+          <ProtectedRoute isUserLoggedIn={isLoggedIn}>
+            <ErrorBoundary
+              fallbackRender={(props) => (
+                <ErrorBoundaryFallback
+                  {...props}
+                  childComponent={<MyProducts />}
+                />
+              )}
+            >
+              <MyProducts />
             </ErrorBoundary>
           </ProtectedRoute>
         }
