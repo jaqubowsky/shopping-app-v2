@@ -10,7 +10,6 @@ import useLoginStatus from "../../hooks/useLoginStatus";
 type UserOptionsModal = {
   toggleLoginDropdown: () => void;
   showLoginDropdown: boolean;
-  user: { username: string; email: string; picture: string };
 };
 
 function UserOptionsModal({
