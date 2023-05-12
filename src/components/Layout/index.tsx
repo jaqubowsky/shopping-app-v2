@@ -2,9 +2,10 @@ import { Outlet } from "react-router-dom";
 import NavBar from "./NavBar";
 import { useState } from "react";
 import CartModal from "../../pages/Cart/CartModal";
-import UserIcon from "../../pages/Login/UserIcon";
+import UserIcon from "./UserIcon";
 import UserOptionsModal from "../../pages/Login/UserOptionsModal";
-import CartIcon from "../../pages/Cart/CartIcon";
+import CartIcon from "./CartIcon";
+import AddProductIcon from "./AddProductIcon";
 
 export default function Layout() {
   const [showCart, setShowCart] = useState(false);
@@ -24,6 +25,7 @@ export default function Layout() {
         <NavBar>
           <CartIcon toggleCart={toggleCart} />
           <UserIcon toggleLoginDropdown={toggleLoginDropdown} />
+          <AddProductIcon />
         </NavBar>
       </header>
 
