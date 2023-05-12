@@ -25,8 +25,9 @@ export default function Login() {
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }, e) => {
     e?.preventDefault();
     try {
-      const loginValues = { email, password };
-      await loginWithEmailAndPassword(loginValues);
+      const formValues = { email, password };
+
+      await loginWithEmailAndPassword(formValues);
       navigate("/");
       navigate(0);
     } catch (err) {
@@ -97,16 +98,6 @@ export default function Login() {
             className="font-medium text-blue-500 transition-colors hover:text-blue-700"
           >
             Sign Up
-          </Link>
-        </Typography>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Forgot your password?{" "}
-          <Link
-            to="/login/reset-password"
-            replace
-            className="font-medium text-blue-500 transition-colors hover:text-blue-700"
-          >
-            Reset
           </Link>
         </Typography>
       </form>
