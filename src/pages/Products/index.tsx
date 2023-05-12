@@ -37,7 +37,6 @@ export default function Products() {
 
   return (
     <div>
-      <h1>It will be products page</h1>
       <button
         className="rounded-full bg-black p-6 text-white"
         onClick={togglePopUp}
