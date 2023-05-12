@@ -5,6 +5,8 @@ export type Product = {
   price: number;
   imageUrl?: string;
   createdBy: string;
+  createdAt: string;
+  category: string;
 };
 
 export type ProductsData = {

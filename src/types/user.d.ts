@@ -28,8 +28,19 @@ export type LoginData = {
   token: string;
 };
 
-export type UserObject = {
-  username: string;
-  email: string;
-  picture: string;
+
+export type UserResponse = {
+  message: string;
+  user: {
+    username?: string;
+    email?: string;
+    imageUrl?: string;
+    createdAt?: string;
+  };
 };
+
+export type UserHookResponse = {
+  userData: UserResponse | null,
+  isLoading: boolean,
+  error: string | null,
+}
