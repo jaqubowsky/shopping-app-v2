@@ -10,5 +10,9 @@
 }
 
 .top-arrow:before {
-  @apply absolute -top-3 left-1/2 transform -translate-x-1/2 h-0 w-0 border-x-8 border-b-[16px] border-x-transparent border-white content-[''];
+  @apply absolute -top-3 left-1/2 h-0 w-0 -translate-x-1/2 transform border-x-8 border-b-[16px] border-white border-x-transparent content-[''];
+}
+
+.main-button {
+  @apply rounded-md bg-yellow-800 p-2 font-bold text-white transition-all hover:scale-105 hover:bg-yellow-700;
 }
