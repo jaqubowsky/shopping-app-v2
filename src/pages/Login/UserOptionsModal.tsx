@@ -25,8 +25,9 @@ function UserOptionsModal({
 
   const { showBoundary } = useErrorBoundary();
 
-  const { user } = useLoginStatus();
-  const isLoggedIn = user ? true : false;
+  const { userData } = useLoginStatus();
+
+  const isLoggedIn = userData?.user === null ? false : true;
 
   const navigate = useNavigate();
 
@@ -58,7 +59,7 @@ function UserOptionsModal({
             onClick={(e) => e.stopPropagation()}
           >
             {isLoggedIn ? (
-              <h1 className="mb-6">Hello {user?.username}!</h1>
+              <h1 className="mb-6">Hello {userData?.user.username}!</h1>
             ) : null}
             <ul className="flex flex-col gap-6">
               {!isLoggedIn ? (
@@ -74,6 +75,11 @@ function UserOptionsModal({
               {isLoggedIn ? (
                 <NavLink onClick={toggleLoginDropdown} to="profile">
                   Profile
+                </NavLink>
+              ) : null}
+              {isLoggedIn ? (
+                <NavLink onClick={toggleLoginDropdown} to="profile/my-products">
+                  My Products
                 </NavLink>
               ) : null}
               {isLoggedIn ? (
