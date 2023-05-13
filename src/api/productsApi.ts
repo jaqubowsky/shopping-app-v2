@@ -14,9 +14,11 @@ const all = axios.create({
   withCredentials: true,
 });
 
-export const addProduct = async (formData: FormData) => {
+export const addProduct = async (
+  formData: FormData
+): Promise<{ data: Product; status: number }> => {
   try {
-    await api.post("/product", formData, {
+    return await api.post("/product", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
