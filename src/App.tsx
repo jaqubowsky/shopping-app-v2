@@ -5,7 +5,6 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Products from "./pages/Products";
 import Layout from "./components/Layout";
 import Contact from "./pages/Contact";
 import Register from "./pages/Login/Register";
@@ -41,7 +40,6 @@ function App() {
       }
     >
       <Route index element={<Home />} />
-      <Route path="products" element={<Products />} />
       <Route path="contact" element={<Contact />} />
       <Route
         path="login"
@@ -82,7 +80,7 @@ function App() {
               fallbackRender={(props) => (
                 <ErrorBoundaryFallback
                   {...props}
-                  childComponent={<MyProducts />}
+                  childComponent={<AddProduct />}
                 />
               )}
             >
