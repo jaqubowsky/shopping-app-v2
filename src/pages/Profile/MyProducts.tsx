@@ -8,12 +8,13 @@ export default function MyProducts() {
     queryKey: ["products"],
     queryFn: getUserProducts,
     staleTime: 1000 * 60 * 5,
-    refetchOnMount: false,
   });
 
   if (isLoading) return <div>Loading...</div>;
 
   const userProductsEl = data?.products.map((product) => {
+    const createdAt = new Date(product.createdAt).toLocaleDateString();
+
     return (
       <div
         className="flex cursor-pointer flex-col items-start justify-center border border-gray-300 p-6 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:border-gray-300 hover:shadow-xl"
@@ -27,12 +28,14 @@ export default function MyProducts() {
           />
         </div>
         <span>Added by: {product.createdBy}</span>
-        <h2 className="mt-6 text-2xl font-bold">{product.name}</h2>
-        <p>{product.description}</p>
-        <p>${product.price}</p>
-        <button className="mt-5 w-full rounded-md bg-yellow-800 p-2 font-bold text-white transition-all hover:scale-105 hover:bg-yellow-700">
-          Add to cart
-        </button>
+        <span>Category: {product.category}</span>
+        <span>Created at: {createdAt}</span>
+        <div className="flex flex-col items-start justify-center gap-2">
+          <h2 className="mt-6 text-2xl font-bold">{product.name}</h2>
+          <p>{product.description}</p>
+          <p className="text-xl italic">${product.price}</p>
+        </div>
+        <button className="main-button mt-4 w-full">Add to cart</button>
       </div>
     );
   });
