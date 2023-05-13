@@ -8,7 +8,7 @@ type ProtectedRouteProps = {
 
 const ProtectedRoute = ({
   isUserLoggedIn,
-  redirectPath = "/",
+  redirectPath = "/login",
   children,
 }: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
   
