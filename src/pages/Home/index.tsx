@@ -7,8 +7,6 @@ export default function Home() {
   const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
     queryKey: ["products"],
     queryFn: getProducts,
-    staleTime: 1000 * 60 * 5,
-    refetchOnMount: false,
   });
 
   if (isLoading) return <div>Loading...</div>;
