@@ -2,12 +2,12 @@ import { getUserProducts } from "../../api/productsApi";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
+import { Link } from "react-router-dom";
 
 export default function MyProducts() {
   const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
-    queryKey: ["products"],
+    queryKey: ["userProducts"],
     queryFn: getUserProducts,
-    staleTime: 1000 * 60 * 5,
   });
 
   if (isLoading) return <div>Loading...</div>;
@@ -35,24 +35,25 @@ export default function MyProducts() {
           <p>{product.description}</p>
           <p className="text-xl italic">${product.price}</p>
         </div>
-        <button className="main-button mt-4 w-full">Add to cart</button>
       </div>
     );
   });
 
+  if (!userProductsEl || userProductsEl.length === 0)
+    return (
+      <div className="flex flex-col items-center justify-center">
+        <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
+        <Link to="/add-product" className="main-button w-8/12">Click here to add one!</Link>
+      </div>
+    );
+
   return (
     <div>
       <SearchBar placeholder="Search your products..." />
-      {userProductsEl ? (
-        <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {userProductsEl}
-        </div>
-      ) : (
-        <div className="flex flex-col items-center justify-center">
-          <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
-          <button className="main-button w-8/12">Click here to add one!</button>
-        </div>
-      )}
+
+      <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {userProductsEl}
+      </div>
     </div>
   );
 }
