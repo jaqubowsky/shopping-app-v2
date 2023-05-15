@@ -5,7 +5,7 @@ type SearchBarProps = {
 };
 
 export default function SearchBar({ placeholder }: SearchBarProps) {
-  const { register, handleSubmit } = useForm();
+  const { register } = useForm();
 
   return (
     <form className="flex justify-center">
