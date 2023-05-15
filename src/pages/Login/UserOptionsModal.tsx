@@ -23,11 +23,8 @@ function UserOptionsModal({
   };
 
   const { showBoundary } = useErrorBoundary();
-
   const { userData } = useLoginStatus();
-
   const isLoggedIn = userData?.user === null ? false : true;
-
   const navigate = useNavigate();
 
   async function logOutUser() {
