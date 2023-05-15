@@ -18,6 +18,7 @@ import useLoginStatus from "./hooks/useLoginStatus";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyProducts from "./pages/Profile/MyProducts";
 import AddProduct from "./pages/AddProduct";
+import ProductPage from "./pages/Products/ProductPage";
 
 function App() {
   const client = new QueryClient({});
@@ -87,6 +88,21 @@ function App() {
               <AddProduct />
             </ErrorBoundary>
           </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products/:id"
+        element={
+          <ErrorBoundary
+            fallbackRender={(props) => (
+              <ErrorBoundaryFallback
+                {...props}
+                childComponent={<ProductPage />}
+              />
+            )}
+          >
+            <ProductPage />
+          </ErrorBoundary>
         }
       />
       <Route
