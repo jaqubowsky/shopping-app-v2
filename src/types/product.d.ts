@@ -12,3 +12,7 @@ export type Product = {
 export type ProductsData = {
   products: Product[];
 };
+
+export type ProductData = {
+  product: Product[];
+};
