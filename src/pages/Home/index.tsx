@@ -2,6 +2,7 @@ import { getProducts } from "../../api/productsApi";
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
+import { Link } from "react-router-dom";
 
 export default function Home() {
   const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
@@ -15,7 +16,8 @@ export default function Home() {
     const createdAt = new Date(product.createdAt).toLocaleDateString();
 
     return (
-      <div
+      <Link
+        to={`/products/${product.id}`}
         className="flex cursor-pointer flex-col items-start justify-center border border-gray-300 p-6 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:border-gray-300 hover:shadow-xl"
         key={product.id}
       >
@@ -35,7 +37,7 @@ export default function Home() {
           <p className="text-xl italic">${product.price}</p>
         </div>
         <button className="main-button mt-4 w-full">Add to cart</button>
-      </div>
+      </Link>
     );
   });
 
