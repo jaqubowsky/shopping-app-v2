@@ -66,3 +66,20 @@ export const getUserProducts = async (): Promise<Product[]> => {
     }
   }
 };
+
+export const getUserProduct = async (id: string): Promise<Product[]> => {
+  try {
+    const response: AxiosResponse<Product[]> = await api.get(`/product/${id}`);
+
+    const product = response.data;
+
+    return product;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      // eslint-disable-next-line
+      throw new Error(err.response?.data);
+    } else {
+      throw new Error("Unexpected error");
+    }
+  }
+};
