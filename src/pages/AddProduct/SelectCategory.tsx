@@ -1,7 +1,12 @@
-import { Controller } from "react-hook-form";
+import { Controller, Control } from "react-hook-form";
 import { Select, Option } from "@material-tailwind/react";
+import { FormInputs } from ".";
 
-export default function SelectCategory({ control }) {
+export default function SelectCategory({
+  control,
+}: {
+  control: Control<FormInputs>;
+}) {
   return (
     <Controller
       control={control}
@@ -29,4 +34,4 @@ export default function SelectCategory({ control }) {
       )}
     />
   );
-};
+}
