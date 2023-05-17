@@ -1,17 +1,20 @@
 import { Controller, Control } from "react-hook-form";
 import { Select, Option } from "@material-tailwind/react";
 import { FormInputs } from ".";
+import { validationInfo } from "./validationInfo";
 
-export default function SelectCategory({
-  control,
-}: {
+type SelectCategorySectionProps = {
   control: Control<FormInputs>;
-}) {
+};
+
+function SelectCategorySection({
+  control,
+}: SelectCategorySectionProps) {
   return (
     <Controller
       control={control}
       name="category"
-      rules={{ required: "Category is required." }}
+      rules={{ required: validationInfo.required.category }}
       render={({ field: { onChange, name } }) => (
         <Select
           label="Select category"
@@ -35,3 +38,5 @@ export default function SelectCategory({
     />
   );
 }
+
+export default SelectCategorySection;
