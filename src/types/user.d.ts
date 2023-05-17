@@ -28,7 +28,6 @@ export type LoginData = {
   token: string;
 };
 
-
 export type UserResponse = {
   message: string;
   user: {
@@ -36,11 +35,13 @@ export type UserResponse = {
     email?: string;
     imageUrl?: string;
     createdAt?: string;
+    location?: string;
+    phoneNumber?: number;
   };
 };
 
 export type UserHookResponse = {
-  userData: UserResponse | null,
-  isLoading: boolean,
-  error: string | null,
-}
+  userData: UserResponse | null;
+  isLoading: boolean;
+  error: string | null;
+};
