@@ -7,6 +7,7 @@ export type Product = {
   createdBy: string;
   createdAt: string;
   category: string;
+  belongsToId: string;
 };
 
 export type ProductsData = {
@@ -14,5 +15,5 @@ export type ProductsData = {
 };
 
 export type ProductData = {
-  product: Product[];
+  product: Product;
 };
