@@ -16,3 +16,7 @@
 .main-button {
   @apply rounded-md bg-yellow-800 p-2 font-bold text-white transition-all hover:scale-105 hover:bg-yellow-700;
 }
+
+.main-button-reverse {
+  @apply rounded-md bg-gray-50 shadow-lg p-2 font-bold text-yellow-800 transition-all hover:scale-105 hover:bg-white;
+}
