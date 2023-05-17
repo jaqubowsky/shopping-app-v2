@@ -69,7 +69,7 @@ export const getUserProducts = async (): Promise<Product[]> => {
 
 export const getUserProduct = async (id: string): Promise<Product[]> => {
   try {
-    const response: AxiosResponse<Product[]> = await api.get(`/product/${id}`);
+    const response: AxiosResponse<Product[]> = await all.get(`/product/${id}`);
 
     const product = response.data;
 
