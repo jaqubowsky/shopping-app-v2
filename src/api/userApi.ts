@@ -16,7 +16,7 @@ export const registerWithEmailAndPassword = async (
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
-      throw new Error(err.response?.data);
+      throw new Error(err.response?.data.message);
     } else {
       throw new Error("Unexpected error");
     }
@@ -52,6 +52,22 @@ export const checkLoginStatus = async (): Promise<UserResponse> => {
     }
   }
 };
+
+export const getUserById = async (id: string): Promise<UserResponse> => {
+  try {
+    const response: AxiosResponse<UserResponse> = await api.get(`/user/${id}`);
+    const userData = response.data;
+
+    return userData;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      // eslint-disable-next-line
+      throw new Error(err.response?.data);
+    } else {
+      throw new Error("Unexpected error");
+    }
+  }
+}
 
 export const signOut = async () => {
   try {
