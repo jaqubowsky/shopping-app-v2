@@ -4,6 +4,10 @@ export const validationInfo = {
     cpassword: "Matchin password is required",
     email: "Email is required",
     username: "Username is required",
+
+    name: "Name is required",
+    surname: "Surname is required",
+    location: "Location is required",
   },
   notMatch: {
     password: "You need to provide matching password!",
