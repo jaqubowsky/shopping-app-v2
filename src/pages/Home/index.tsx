@@ -14,6 +14,10 @@ export default function Home() {
 
   const allProductsEl = data?.products.map((product) => {
     const createdAt = new Date(product.createdAt).toLocaleDateString();
+    let shortenedDescription = "";
+    if (product.description) {
+      shortenedDescription = `${product.description.slice(0, 35)}...`;
+    }
 
     return (
       <Link
@@ -28,12 +32,14 @@ export default function Home() {
             alt={product.name}
           />
         </div>
-        <span>Added by: {product.createdBy}</span>
-        <span>Category: {product.category}</span>
-        <span>Created at: {createdAt}</span>
+        <div className="flex flex-col items-start justify-center">
+          <span>Added by: {product.createdBy}</span>
+          <span>Category: {product.category}</span>
+          <span>Created at: {createdAt}</span>
+        </div>
         <div className="flex flex-col items-start justify-center gap-2">
-          <h2 className="mt-6 text-2xl font-bold">{product.name}</h2>
-          <p>{product.description}</p>
+          <h2 className="mt-4 text-2xl font-bold">{product.name}</h2>
+          <p>{shortenedDescription}</p>
           <p className="text-xl italic">${product.price}</p>
         </div>
         <button className="main-button mt-4 w-full">Add to cart</button>
