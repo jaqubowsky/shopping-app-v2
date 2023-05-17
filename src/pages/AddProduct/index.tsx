@@ -12,6 +12,9 @@ export type FormInputs = {
   price: number;
   category: string;
   image: FileList;
+  email: string;
+  phoneNumber: string;
+  location: string;
 };
 
 export default function AddProduct() {
@@ -71,6 +74,9 @@ export default function AddProduct() {
     category,
     price,
     image,
+    email,
+    location,
+    phoneNumber
   }: FormInputs) => {
     const formData = new FormData();
     formData.append("name", name);
@@ -78,6 +84,10 @@ export default function AddProduct() {
     formData.append("category", category);
     formData.append("price", price.toString());
     formData.append("image", image[0]);
+    
+    formData.append("email", email);
+    formData.append("location", location);
+    formData.append("phoneNumber", phoneNumber);
 
     return formData;
   };
@@ -88,6 +98,9 @@ export default function AddProduct() {
     category,
     price,
     image,
+    email,
+    location,
+    phoneNumber,
   }) => {
     try {
       const formData = compileFormData({
@@ -96,6 +109,9 @@ export default function AddProduct() {
         category,
         price,
         image,
+        email,
+        location,
+        phoneNumber,
       });
       setIsLoading(true);
       await handleAddProduct(formData);
