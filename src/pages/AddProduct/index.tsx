@@ -2,18 +2,17 @@ import { FormEvent, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addProduct } from "../../api/productsApi";
 import { useErrorBoundary } from "react-error-boundary";
-
 import AddProductForm from "./AddProductForm";
+import { checkLoginStatus } from "../../api/userApi";
 
 export type FormInputs = {
-  e?: Event;
   name: string;
   description: string;
-  price: number;
+  price: number | null;
   category: string;
-  image: FileList;
+  image?: FileList;
   email: string;
-  phoneNumber: string;
+  phoneNumber: number;
   location: string;
 };
 
@@ -28,7 +27,20 @@ export default function AddProduct() {
     control,
     reset,
     formState: { errors },
-  } = useForm<FormInputs>();
+  } = useForm<FormInputs>({
+    defaultValues: async () => {
+      const data = await checkLoginStatus();
+      return {
+        name: "",
+        description: "",
+        price: null,
+        category: "",
+        email: data?.user.email || "",
+        phoneNumber: data?.user.phoneNumber || 0,
+        location: data?.user.location || "",
+      };
+    },
+  });
 
   const handleImageChange = (event: FormEvent<HTMLInputElement>) => {
     try {
@@ -76,18 +88,21 @@ export default function AddProduct() {
     image,
     email,
     location,
-    phoneNumber
+    phoneNumber,
   }: FormInputs) => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
     formData.append("category", category);
-    formData.append("price", price.toString());
-    formData.append("image", image[0]);
-    
+    if (price) {
+      formData.append("price", price.toString());
+    }
+    if (image) {
+      formData.append("image", image[0]);
+    }
     formData.append("email", email);
     formData.append("location", location);
-    formData.append("phoneNumber", phoneNumber);
+    formData.append("phoneNumber", phoneNumber.toString());
 
     return formData;
   };
