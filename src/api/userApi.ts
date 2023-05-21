@@ -40,7 +40,6 @@ export const checkLoginStatus = async (): Promise<UserResponse> => {
   try {
     const response: AxiosResponse<UserResponse> = await api.get("/logged-in");
     const userData = response.data;
-    console.log(userData)
     return userData;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
