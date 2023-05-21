@@ -8,19 +8,20 @@ const useLoginStatus = (): UserHookResponse => {
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchUser = async () => {
-    const data = await checkLoginStatus();
-
-    setUserData(data);
-    setIsLoading(false);
-  };
-
   useEffect(() => {
-    fetchUser().catch((err) => {
-      setError(getErrorMessage(err));
-      setIsLoading(false);
-    });
-  }, []);
+    const fetchUser = async () => {
+      try {
+        const data = await checkLoginStatus();
+        setUserData(data);
+      } catch (err) {
+        setError(getErrorMessage(err));
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUser();
+  }, [userData]);
 
   return { userData, error, isLoading };
 };
