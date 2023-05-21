@@ -1,14 +1,15 @@
-import useLoginStatus from "../../hooks/useLoginStatus";
 import { Avatar } from "@material-tailwind/react";
 import AccountDate from "./AccountDate";
+import { UserResponse } from "../../types/user";
 
-export default function Profile() {
-  const { userData, isLoading } = useLoginStatus();
+type ProfileProps = {
+  userData: UserResponse | null;
+}
+
+export default function Profile({userData}: ProfileProps) {
   const username = userData?.user.username;
   const email = userData?.user.email;
   const userImage = userData?.user.imageUrl;
-
-  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div className="grid w-8/12 grid-cols-2 items-start justify-center p-4">
@@ -25,7 +26,7 @@ export default function Profile() {
         />
       </section>
       <section className=" ml-6">
-        <AccountDate />
+        <AccountDate userData={userData}/>
       </section>
     </div>
   );

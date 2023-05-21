@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
-import useLoginStatus from "../../hooks/useLoginStatus";
+import { UserResponse } from "../../types/user";
 
-const AccountDate = () => {
-  const { userData, isLoading } = useLoginStatus();
+type AccountAgeProps = {
+  userData: UserResponse | null;
+};
+
+const AccountDate = ({ userData }: AccountAgeProps) => {
   const [accountAge, setAccountAge] = useState({
     days: 0,
     months: 0,
@@ -10,7 +13,7 @@ const AccountDate = () => {
   });
 
   useEffect(() => {
-    if (!isLoading && userData?.user.createdAt) {
+    if (userData?.user.createdAt) {
       const currentDate = new Date();
       const accountCreationDate = new Date(userData.user.createdAt);
 
@@ -21,11 +24,7 @@ const AccountDate = () => {
 
       setAccountAge({ days: days % 31, months: months % 12, years });
     }
-  }, [isLoading, userData?.user.createdAt]);
-
-  if (isLoading) {
-    return <h2>Loading...</h2>;
-  }
+  }, [userData?.user.createdAt]);
 
   return (
     <div className="flex flex-col items-start">
