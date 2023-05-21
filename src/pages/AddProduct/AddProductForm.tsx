@@ -7,7 +7,6 @@ import {
   UseFormRegister,
 } from "react-hook-form";
 import { FormEvent } from "react";
-import useLoginStatus from "../../hooks/useLoginStatus";
 import ContactSection from "./ContactSection";
 import PriceSection from "./PriceSection";
 import DescriptionSection from "./DescriptionSection";
@@ -33,7 +32,6 @@ export default function AddProductForm({
   previewImage,
   onSubmit,
 }: AddProductFormProps) {
-  const { userData } = useLoginStatus();
 
   return (
     <form
@@ -49,7 +47,7 @@ export default function AddProductForm({
       />
       <DescriptionSection register={register} errors={errors} />
       <PriceSection register={register} errors={errors} />
-      <ContactSection register={register} errors={errors} userData={userData} />
+      <ContactSection register={register} errors={errors} />
       <div className="text-center">
         <button className="main-button w-9/12">Add product!</button>
       </div>
