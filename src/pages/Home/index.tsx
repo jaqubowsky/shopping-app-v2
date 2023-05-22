@@ -22,7 +22,7 @@ export default function Home() {
     return (
       <Link
         to={`/products/${product.id}`}
-        className="flex cursor-pointer flex-col items-start justify-center border border-gray-300 p-6 shadow-lg transition duration-300 ease-in-out hover:scale-105 hover:border-gray-300 hover:shadow-xl"
+        className="flex cursor-pointer flex-col items-start justify-center border border-gray-300 p-6 shadow-md transition-all duration-300 hover:border-gray-400 hover:shadow-2xl"
         key={product.id}
       >
         <div className="mb-8 flex h-80 w-64 items-center self-center border-b border-b-gray-300">
