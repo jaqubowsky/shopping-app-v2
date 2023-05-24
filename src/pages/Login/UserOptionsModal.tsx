@@ -5,16 +5,18 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useErrorBoundary } from "react-error-boundary";
 import { signOut } from "../../api/userApi";
 import { onPromise } from "../../utils/onPromise";
-import useLoginStatus from "../../hooks/useLoginStatus";
+import { UserResponse } from "../../types/user";
 
 type UserOptionsModal = {
   toggleLoginDropdown: () => void;
   showLoginDropdown: boolean;
+  userData: UserResponse | undefined;
 };
 
 function UserOptionsModal({
   toggleLoginDropdown,
   showLoginDropdown,
+  userData
 }: UserOptionsModal) {
   const animationVariants = {
     initial: { x: 1000 },
@@ -23,14 +25,12 @@ function UserOptionsModal({
   };
 
   const { showBoundary } = useErrorBoundary();
-  const { userData } = useLoginStatus();
   const isLoggedIn = userData?.user === null ? false : true;
   const navigate = useNavigate();
 
   async function logOutUser() {
     try {
       await signOut();
-      navigate(0);
     } catch (err) {
       showBoundary(err);
     } finally {
