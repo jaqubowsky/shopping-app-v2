@@ -1,4 +1,4 @@
-import { Card, Input, Button, Typography } from "@material-tailwind/react";
+import { Input, Button, Typography } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -6,6 +6,8 @@ import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
 import { useErrorBoundary } from "react-error-boundary";
 import { loginWithEmailAndPassword } from "../../api/userApi";
+import useAlert from "../../hooks/useAlert";
+import SuccessAlert from "../../components/PopUp/SuccessAlert";
 
 type Inputs = {
   e?: Event;
@@ -22,21 +24,23 @@ export default function Login() {
   const { showBoundary } = useErrorBoundary();
   const navigate = useNavigate();
 
+  const { showAlert, showAlertMessage } = useAlert(false);
+
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }, e) => {
     e?.preventDefault();
     try {
       const formValues = { email, password };
 
       await loginWithEmailAndPassword(formValues);
+      showAlertMessage();
       navigate("/");
-      navigate(0);
     } catch (err) {
       showBoundary(err);
     }
   };
 
   return (
-    <Card color="transparent" shadow={false} onSubmit={() => register}>
+    <div className="mx-auto my-0 w-72">
       <Typography variant="h4" color="blue-gray">
         Sign In
       </Typography>
@@ -45,9 +49,9 @@ export default function Login() {
       </Typography>
       <form
         onSubmit={onPromise(handleSubmit(onSubmit))}
-        className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96"
+        className="mb-2 mt-8 w-80"
       >
-        <div className="mb-4 flex flex-col gap-2">
+        <div className="flex w-11/12 flex-col gap-2">
           <Input
             type="email"
             size="lg"
@@ -86,21 +90,22 @@ export default function Login() {
               }
             />
           )}
+          <Button className="mt-6" type="submit" color="amber" fullWidth>
+            Login
+          </Button>
+          <Typography color="gray" className="mt-4 text-center font-normal">
+            Do not have an account?{" "}
+            <Link
+              to="/register"
+              replace
+              className="font-medium text-blue-500 transition-colors hover:text-blue-700"
+            >
+              Sign Up
+            </Link>
+          </Typography>
         </div>
-        <Button className="mt-6" type="submit" color="amber" fullWidth>
-          Login
-        </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal">
-          Do not have an account?{" "}
-          <Link
-            to="/register"
-            replace
-            className="font-medium text-blue-500 transition-colors hover:text-blue-700"
-          >
-            Sign Up
-          </Link>
-        </Typography>
       </form>
-    </Card>
+      {showAlert && <SuccessAlert message="Logged in succesfully!"/> }
+    </div>
   );
 }
