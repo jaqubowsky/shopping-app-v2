@@ -14,22 +14,24 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
 import { ErrorBoundary } from "react-error-boundary";
 import ErrorBoundaryFallback from "./components/PopUp/ErrorBoundaryFallback";
-import useLoginStatus from "./hooks/useLoginStatus";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import MyProducts from "./pages/Profile/MyProducts";
 import AddProduct from "./pages/AddProduct";
 import ProductPage from "./pages/Products/ProductPage";
+import { UserResponse } from "./types/user";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
+import { checkLoginStatus } from "./api/userApi";
 
 function App() {
-  const client = new QueryClient({});
+  const { data: userData }: UseQueryResult<UserResponse> = useQuery({
+    queryKey: ["userData"],
+    queryFn: checkLoginStatus,
+  });
+  let loggedIn;
 
-  const { userData } = useLoginStatus();
-  let loggedIn
-
-  if (userData?.message === "Authorized") {
-    loggedIn = true
+  if (userData?.user === null) {
+    loggedIn = false;
   } else {
-    loggedIn = false
+    loggedIn = true;
   }
 
   const routes = createRoutesFromChildren(
@@ -38,10 +40,13 @@ function App() {
       element={
         <ErrorBoundary
           fallbackRender={(props) => (
-            <ErrorBoundaryFallback {...props} childComponent={<Layout />} />
+            <ErrorBoundaryFallback
+              {...props}
+              childComponent={<Layout userData={userData} />}
+            />
           )}
         >
-          <Layout />
+          <Layout userData={userData} />
         </ErrorBoundary>
       }
     >
@@ -151,9 +156,7 @@ function App() {
 
   return (
     <ThemeProvider>
-      <QueryClientProvider client={client}>
-        <RouterProvider router={router} />
-      </QueryClientProvider>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }
