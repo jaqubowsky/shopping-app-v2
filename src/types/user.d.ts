@@ -40,6 +40,16 @@ export type UserResponse = {
   };
 };
 
+export type OtherUserResponse = {
+  user: {
+    email: string;
+    imageUrl: string;
+    name: string;
+    phoneNumber: number;
+    username: string;
+  };
+};
+
 export type UserHookResponse = {
   userData: UserResponse | null;
   isLoading: boolean;
