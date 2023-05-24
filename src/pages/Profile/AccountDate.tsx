@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { UserResponse } from "../../types/user";
 
 type AccountAgeProps = {
-  userData: UserResponse | null;
+  userData: UserResponse | undefined;
 };
 
 const AccountDate = ({ userData }: AccountAgeProps) => {
