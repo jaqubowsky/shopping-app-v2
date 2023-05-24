@@ -3,7 +3,7 @@ import AccountDate from "./AccountDate";
 import { UserResponse } from "../../types/user";
 
 type ProfileProps = {
-  userData: UserResponse | null;
+  userData: UserResponse | undefined;
 }
 
 export default function Profile({userData}: ProfileProps) {
