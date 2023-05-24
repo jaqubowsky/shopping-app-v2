@@ -52,12 +52,20 @@ export const checkLoginStatus = async (): Promise<UserResponse> => {
   }
 };
 
-export const getUserById = async (id: string): Promise<UserResponse> => {
+export const getUserById = async (
+  id: string | undefined
+): Promise<UserResponse> => {
   try {
-    const response: AxiosResponse<UserResponse> = await api.get(`/user/${id}`);
-    const userData = response.data;
+    if (id) {
+      const response: AxiosResponse<UserResponse> = await api.get(
+        `/user/${id}`
+      );
+      const userData = response.data;
 
-    return userData;
+      return userData;
+    } else {
+      throw new Error("User not found");
+    }
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -66,7 +74,7 @@ export const getUserById = async (id: string): Promise<UserResponse> => {
       throw new Error("Unexpected error");
     }
   }
-}
+};
 
 export const signOut = async () => {
   try {
