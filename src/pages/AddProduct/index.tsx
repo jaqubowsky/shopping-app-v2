@@ -141,7 +141,7 @@ export default function AddProduct() {
 
   return (
     <div className="flex w-8/12 flex-col items-start gap-4">
-      <h1 className="text-4xl">
+      <h1 className="text-4xl text-center">
         Add new <span className="text-yellow-800 drop-shadow-sm">product</span>
       </h1>
       <AddProductForm
