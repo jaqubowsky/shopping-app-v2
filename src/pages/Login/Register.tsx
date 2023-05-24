@@ -52,7 +52,7 @@ export default function Register() {
   };
 
   return (
-    <Card color="transparent" shadow={false} onSubmit={() => register}>
+    <Card color="transparent" shadow={false}>
       <Typography variant="h4" color="blue-gray">
         Sign Up
       </Typography>
@@ -61,9 +61,9 @@ export default function Register() {
       </Typography>
       <form
         onSubmit={onPromise(handleSubmit(onSubmit))}
-        className="mb-2 mt-8 w-80 max-w-screen-lg sm:w-96"
+        className="mb-2 mt-8"
       >
-        <div className="mb-4 flex flex-row gap-2">
+        <div className="mb-4 flex flex-col gap-2">
           <div className="flex flex-col gap-3">
             <Input
               type="text"
@@ -103,7 +103,9 @@ export default function Register() {
               type="number"
               size="lg"
               label="Number"
-              {...register("phoneNumber", {})}
+              {...register("phoneNumber", {
+                required: validationInfo.required.phoneNumber,
+              })}
             />
             {errors.phoneNumber && (
               <ErrorMessage
@@ -155,7 +157,7 @@ export default function Register() {
               size="lg"
               label="Email"
               {...register("email", {
-                required: true,
+                required: validationInfo.required.email,
                 pattern: {
                   value: /\S+@\S+\.\S+/,
                   message: validationInfo.notMatch.email,
