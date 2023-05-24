@@ -13,9 +13,9 @@ type NameSectionProps = {
 
 function NameSection({ register, errors, control }: NameSectionProps) {
   return (
-    <div className="mb-4 rounded-sm bg-gray-100 p-4">
+    <div className="mb-4 rounded-sm bg-gray-100 p-4 text-start">
       <h2 className="mb-5 text-xl">The more details, the better!</h2>
-      <div className="flex w-3/4 flex-col gap-4">
+      <div className="flex flex-col gap-4 items-center">
         <Input
           size="lg"
           label="Name"

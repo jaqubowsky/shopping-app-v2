@@ -35,7 +35,7 @@ export default function AddProductForm({
 
   return (
     <form
-      className="mb-2 mt-8 flex w-full flex-col gap-2"
+      className="mt-8 flex w-full flex-col gap-2"
       onSubmit={onPromise(handleSubmit(onSubmit))}
     >
       <NameSection register={register} errors={errors} control={control} />

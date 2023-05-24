@@ -11,9 +11,8 @@ type PriceSectionProps = {
 
 function PriceSection({ errors, register }: PriceSectionProps) {
   return (
-    <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4">
-      <div className="w-1/4">
-        <h2 className="mb-5 text-xl">Enter the price</h2>
+    <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4 items-center">
+        <h2 className="text-xl">Enter the price</h2>
         <Input
           color="amber"
           label="Price"
@@ -30,7 +29,6 @@ function PriceSection({ errors, register }: PriceSectionProps) {
           />
         )}
       </div>
-    </div>
   );
 }
 

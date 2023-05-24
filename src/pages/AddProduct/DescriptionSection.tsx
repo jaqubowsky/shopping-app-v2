@@ -12,7 +12,7 @@ type DescriptionSectionProps = {
 function DescriptionSection({ register, errors }: DescriptionSectionProps) {
   return (
     <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4">
-      <div className="w-3/4">
+      <div className="flex items-center flex-col">
         <h2 className="mb-5 text-xl">Description</h2>
         <Textarea
           color="amber"

@@ -18,23 +18,23 @@ function ImageSection({previewImage, handleImageChange, register, errors}: Image
         <h2 className="text-xl">Photo</h2>
         <h3 className="text-gray-600">Maximum file load is 5 MB!</h3>
       </div>
-      <div className="relative flex flex-row justify-between">
-        <label
-          htmlFor="fileInput"
-          className="h-72 cursor-pointer rounded bg-yellow-700 p-4 text-center text-white hover:bg-yellow-600"
-        >
-          Choose File
-        </label>
-        {previewImage && (
-          <div className="h-72 w-72">
-            <img
-              id="preview"
-              className="h-full w-full object-cover"
-              src={previewImage}
-              alt="preview"
-            />
-          </div>
-        )}
+      <div className="relative flex flex-col items-center gap-4">
+          <label
+            htmlFor="fileInput"
+            className="w-full cursor-pointer rounded bg-yellow-700 p-4 text-center text-white hover:bg-yellow-600"
+          >
+            Choose File
+          </label>
+          {previewImage && (
+            <div className="w-64">
+              <img
+                id="preview"
+                className="h-full w-full object-cover"
+                src={previewImage}
+                alt="preview"
+              />
+            </div>
+          )}
         <div className="gap-4">
           <input
             id="fileInput"
@@ -48,7 +48,9 @@ function ImageSection({previewImage, handleImageChange, register, errors}: Image
           {errors.image && (
             <ErrorMessage
               message={
-                errors.image.message ? errors.image.message : validationInfo.undefined
+                errors.image.message
+                  ? errors.image.message
+                  : validationInfo.undefined
               }
             />
           )}

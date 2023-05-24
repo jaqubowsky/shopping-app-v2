@@ -10,11 +10,10 @@ type AddProductFormProps = {
 };
 
 function ContactSection({ register, errors }: AddProductFormProps) {
-
   return (
     <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4 ">
       <h2 className="text-xl">Enter the contact details</h2>
-      <div className="flex w-1/4 flex-col gap-6">
+      <div className="flex flex-col items-center gap-6">
         <Input
           color="amber"
           label="Email"
@@ -72,4 +71,4 @@ function ContactSection({ register, errors }: AddProductFormProps) {
   );
 }
 
-export default ContactSection
+export default ContactSection;
