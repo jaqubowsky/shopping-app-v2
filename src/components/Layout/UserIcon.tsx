@@ -1,15 +1,12 @@
 import { BiUser } from "react-icons/bi";
-import useLoginStatus from "../../hooks/useLoginStatus";
+import { UserResponse } from "../../types/user";
 
 type UserIconProps = {
   toggleLoginDropdown: () => void;
+  userData: UserResponse | undefined;
 };
 
-function UserIcon({ toggleLoginDropdown }: UserIconProps) {
-  const { userData } = useLoginStatus();
-
-  const user = userData?.user;
-
+function UserIcon({ toggleLoginDropdown, userData }: UserIconProps) {
   const handleEnterPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
       toggleLoginDropdown();
@@ -29,11 +26,11 @@ function UserIcon({ toggleLoginDropdown }: UserIconProps) {
         e.stopPropagation();
       }}
     >
-      {user?.imageUrl ? (
+      {userData?.user ? (
         <img
           role="presentation"
           className="scale-150 rounded-full"
-          src={user?.imageUrl}
+          src={userData.user.imageUrl}
           alt="user"
         />
       ) : (
