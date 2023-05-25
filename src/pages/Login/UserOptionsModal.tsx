@@ -2,10 +2,10 @@ import ModalPortal from "../../components/Modal/ModalPortal";
 import ModalWrapper from "../../components/Modal/ModalWrapper";
 import { motion } from "framer-motion";
 import { NavLink, useNavigate } from "react-router-dom";
-import { useErrorBoundary } from "react-error-boundary";
 import { signOut } from "../../api/userApi";
 import { onPromise } from "../../utils/onPromise";
 import { UserResponse } from "../../types/user";
+import { notify } from "../../components/PopUp/Notification";
 
 type UserOptionsModal = {
   toggleLoginDropdown: () => void;
@@ -16,7 +16,7 @@ type UserOptionsModal = {
 function UserOptionsModal({
   toggleLoginDropdown,
   showLoginDropdown,
-  userData
+  userData,
 }: UserOptionsModal) {
   const animationVariants = {
     initial: { x: 1000 },
@@ -24,15 +24,16 @@ function UserOptionsModal({
     exit: { x: 1000, transition: { duration: 0.5 } },
   };
 
-  const { showBoundary } = useErrorBoundary();
   const isLoggedIn = userData?.user === null ? false : true;
   const navigate = useNavigate();
 
   async function logOutUser() {
     try {
       await signOut();
+      navigate(0);
+      notify({ message: "Logged out successfully!", type: "success" });
     } catch (err) {
-      showBoundary(err);
+      notify({ message: err.message, type: "error" });
     } finally {
       toggleLoginDropdown();
     }

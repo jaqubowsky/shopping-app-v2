@@ -5,7 +5,7 @@ import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
-import { useErrorBoundary } from "react-error-boundary";
+import { notify } from "../../components/PopUp/Notification";
 
 type Inputs = {
   e?: Event;
@@ -28,8 +28,6 @@ export default function Register() {
     formState: { errors },
   } = useForm<Inputs>();
 
-  const { showBoundary } = useErrorBoundary();
-
   const onSubmit: SubmitHandler<Inputs> = async (
     { email, password, username, name, surname, location, phoneNumber },
     e
@@ -46,8 +44,8 @@ export default function Register() {
         phoneNumber,
       };
       await registerWithEmailAndPassword(registerValues);
+      notify({ message: "Registered successfully!", type: "success" });
     } catch (err) {
-      showBoundary(err);
     }
   };
 

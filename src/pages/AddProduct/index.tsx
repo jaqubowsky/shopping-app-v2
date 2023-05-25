@@ -1,9 +1,10 @@
 import { FormEvent, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addProduct } from "../../api/productsApi";
-import { useErrorBoundary } from "react-error-boundary";
 import AddProductForm from "./AddProductForm";
 import { checkLoginStatus } from "../../api/userApi";
+import { notify } from "../../components/PopUp/Notification";
+import Spinner from "../../components/Spinner";
 
 export type FormInputs = {
   name: string;
@@ -19,7 +20,6 @@ export type FormInputs = {
 export default function AddProduct() {
   const [previewImage, setPreviewImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const { showBoundary } = useErrorBoundary();
 
   const {
     register,
@@ -66,7 +66,7 @@ export default function AddProduct() {
 
       return setPreviewImage("");
     } catch (err) {
-      showBoundary(err);
+      notify({ message: err.message, type: "error" });
     }
   };
 
@@ -130,18 +130,19 @@ export default function AddProduct() {
       });
       setIsLoading(true);
       await handleAddProduct(formData);
+      notify({ message: "Product added successfully!", type: "success" });
     } catch (err) {
-      showBoundary(err);
+      notify({ message: err.message, type: "error" });
     }
   };
 
   if (isLoading) {
-    return <h2>Adding product...</h2>;
+    return <Spinner />;
   }
 
   return (
     <div className="flex w-8/12 flex-col items-start gap-4">
-      <h1 className="text-4xl text-center">
+      <h1 className="text-center text-4xl">
         Add new <span className="text-yellow-800 drop-shadow-sm">product</span>
       </h1>
       <AddProductForm

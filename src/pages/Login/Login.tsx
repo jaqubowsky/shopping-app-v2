@@ -4,10 +4,8 @@ import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
-import { useErrorBoundary } from "react-error-boundary";
 import { loginWithEmailAndPassword } from "../../api/userApi";
-import useAlert from "../../hooks/useAlert";
-import SuccessAlert from "../../components/PopUp/SuccessAlert";
+import { notify } from "../../components/PopUp/Notification";
 
 type Inputs = {
   e?: Event;
@@ -21,10 +19,7 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const { showBoundary } = useErrorBoundary();
   const navigate = useNavigate();
-
-  const { showAlert, showAlertMessage } = useAlert(false);
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }, e) => {
     e?.preventDefault();
@@ -32,10 +27,10 @@ export default function Login() {
       const formValues = { email, password };
 
       await loginWithEmailAndPassword(formValues);
-      showAlertMessage();
-      navigate("/");
+      navigate(0);
+      notify({ message: "Logged in successfully!", type: "success" });
     } catch (err) {
-      showBoundary(err);
+      notify({ message: err.message, type: "error" });
     }
   };
 
@@ -105,7 +100,6 @@ export default function Login() {
           </Typography>
         </div>
       </form>
-      {showAlert && <SuccessAlert message="Logged in succesfully!"/> }
     </div>
   );
 }
