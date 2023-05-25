@@ -12,140 +12,70 @@ import Login from "./pages/Login/Login";
 import { ThemeProvider } from "@material-tailwind/react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Profile from "./pages/Profile";
-import { ErrorBoundary } from "react-error-boundary";
-import ErrorBoundaryFallback from "./components/PopUp/ErrorBoundaryFallback";
 import MyProducts from "./pages/Profile/MyProducts";
 import AddProduct from "./pages/AddProduct";
 import ProductPage from "./pages/Products/ProductPage";
 import { UserResponse } from "./types/user";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { checkLoginStatus } from "./api/userApi";
+import "react-toastify/dist/ReactToastify.css";
+import Notification from "./components/PopUp/Notification";
 
 function App() {
   const { data: userData }: UseQueryResult<UserResponse> = useQuery({
     queryKey: ["userData"],
     queryFn: checkLoginStatus,
   });
-  let loggedIn;
+  let isloggedIn;
 
   if (userData?.user === null) {
-    loggedIn = false;
+    isloggedIn = false;
   } else {
-    loggedIn = true;
+    isloggedIn = true;
   }
 
   const routes = createRoutesFromChildren(
-    <Route
-      path="/"
-      element={
-        <ErrorBoundary
-          fallbackRender={(props) => (
-            <ErrorBoundaryFallback
-              {...props}
-              childComponent={<Layout userData={userData} />}
-            />
-          )}
-        >
-          <Layout userData={userData} />
-        </ErrorBoundary>
-      }
-    >
+    <Route path="/" element={<Layout userData={userData} />}>
       <Route index element={<Home />} />
       <Route path="contact" element={<Contact />} />
       <Route
         path="login"
         element={
-          <ProtectedRoute isUserLoggedIn={!loggedIn}>
-            <ErrorBoundary
-              fallbackRender={(props) => (
-                <ErrorBoundaryFallback {...props} childComponent={<Login />} />
-              )}
-            >
-              <Login />
-            </ErrorBoundary>
+          <ProtectedRoute isUserLoggedIn={isloggedIn} redirectPath="/">
+            <Login />
           </ProtectedRoute>
         }
       />
       <Route
         path="register"
         element={
-          <ProtectedRoute isUserLoggedIn={!loggedIn}>
-            <ErrorBoundary
-              fallbackRender={(props) => (
-                <ErrorBoundaryFallback
-                  {...props}
-                  childComponent={<Register />}
-                />
-              )}
-            >
-              <Register />
-            </ErrorBoundary>
+          <ProtectedRoute isUserLoggedIn={isloggedIn} redirectPath="/">
+            <Register />
           </ProtectedRoute>
         }
       />
       <Route
         path="add-product"
         element={
-          <ProtectedRoute isUserLoggedIn={!loggedIn}>
-            <ErrorBoundary
-              fallbackRender={(props) => (
-                <ErrorBoundaryFallback
-                  {...props}
-                  childComponent={<AddProduct />}
-                />
-              )}
-            >
-              <AddProduct />
-            </ErrorBoundary>
+          <ProtectedRoute isUserLoggedIn={!isloggedIn} redirectPath="/login">
+            <AddProduct />
           </ProtectedRoute>
         }
       />
-      <Route
-        path="/products/:id"
-        element={
-          <ErrorBoundary
-            fallbackRender={(props) => (
-              <ErrorBoundaryFallback
-                {...props}
-                childComponent={<ProductPage />}
-              />
-            )}
-          >
-            <ProductPage />
-          </ErrorBoundary>
-        }
-      />
+      <Route path="/products/:id" element={<ProductPage />} />
       <Route
         path="profile"
         element={
-          <ProtectedRoute isUserLoggedIn={!loggedIn}>
-            <ErrorBoundary
-              fallbackRender={(props) => (
-                <ErrorBoundaryFallback
-                  {...props}
-                  childComponent={<Profile userData={userData} />}
-                />
-              )}
-            >
-              <Profile userData={userData} />
-            </ErrorBoundary>
+          <ProtectedRoute isUserLoggedIn={!isloggedIn} redirectPath="/login">
+            <Profile userData={userData} />
           </ProtectedRoute>
         }
       />
       <Route
         path="profile/my-products"
         element={
-          <ProtectedRoute isUserLoggedIn={!loggedIn}>
-            <ErrorBoundary
-              fallbackRender={(props) => (
-                <ErrorBoundaryFallback
-                  {...props}
-                  childComponent={<MyProducts />}
-                />
-              )}
-            >
-              <MyProducts />
-            </ErrorBoundary>
+          <ProtectedRoute isUserLoggedIn={!isloggedIn} redirectPath="/login">
+            <MyProducts />
           </ProtectedRoute>
         }
       />
@@ -157,6 +87,7 @@ function App() {
   return (
     <ThemeProvider>
       <RouterProvider router={router} />
+      <Notification />
     </ThemeProvider>
   );
 }
