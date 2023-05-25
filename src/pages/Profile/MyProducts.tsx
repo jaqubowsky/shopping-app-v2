@@ -3,6 +3,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 export default function MyProducts() {
   const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
@@ -10,7 +11,7 @@ export default function MyProducts() {
     queryFn: getUserProducts,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner />;
 
   const userProductsEl = data?.products.map((product) => {
     const createdAt = new Date(product.createdAt).toLocaleDateString();
@@ -43,7 +44,9 @@ export default function MyProducts() {
     return (
       <div className="flex flex-col items-center justify-center">
         <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
-        <Link to="/add-product" className="main-button w-8/12">Click here to add one!</Link>
+        <Link to="/add-product" className="main-button w-8/12">
+          Click here to add one!
+        </Link>
       </div>
     );
 

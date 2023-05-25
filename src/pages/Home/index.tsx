@@ -3,6 +3,7 @@ import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
 import { Link } from "react-router-dom";
+import Spinner from "../../components/Spinner";
 
 export default function Home() {
   const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
@@ -10,7 +11,7 @@ export default function Home() {
     queryFn: getProducts,
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <Spinner />;
 
   const allProductsEl = data?.products.map((product) => {
     const createdAt = new Date(product.createdAt).toLocaleDateString();
