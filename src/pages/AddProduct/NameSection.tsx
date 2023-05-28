@@ -13,27 +13,37 @@ type NameSectionProps = {
 
 function NameSection({ register, errors, control }: NameSectionProps) {
   return (
-    <div className="mb-4 rounded-sm bg-gray-100 p-4 text-start">
-      <h2 className="mb-5 text-xl">The more details, the better!</h2>
-      <div className="flex flex-col gap-4 items-center">
-        <Input
-          size="lg"
-          label="Name"
-          color="amber"
-          {...register("name", {
-            required: validationInfo.required.name,
-          })}
-        />
-        {errors.name && (
-          <ErrorMessage
-            message={
-              errors.name.message ? errors.name.message : validationInfo.undefined
-            }
+    <section className="form-section">
+      <h2 className="text-xl">
+        The more details, the{" "}
+        <span className="text-yellow-800 drop-shadow-lg">better!</span>
+      </h2>
+      <div className="inputs-box md:flex-row">
+        <div className="input-box">
+          <Input
+            size="lg"
+            label="Name"
+            color="amber"
+            {...register("name", {
+              required: validationInfo.required.name,
+              maxLength: 100,
+            })}
           />
-        )}
+          {errors.name && (
+            <ErrorMessage
+              message={
+                errors.name.message
+                  ? errors.name.message
+                  : errors.name.type === "maxLength"
+                  ? validationInfo.length.tooLong.name
+                  : validationInfo.undefined
+              }
+            />
+          )}
+        </div>
         <SelectCategorySection control={control} />
       </div>
-    </div>
+    </section>
   );
 }
 
