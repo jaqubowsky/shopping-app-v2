@@ -11,8 +11,9 @@ type PriceSectionProps = {
 
 function PriceSection({ errors, register }: PriceSectionProps) {
   return (
-    <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4 items-center">
-        <h2 className="text-xl">Enter the price</h2>
+    <section className="form-section">
+      <h2 className="text-xl">Enter the price</h2>
+      <div className="input-box">
         <Input
           color="amber"
           label="Price"
@@ -24,12 +25,15 @@ function PriceSection({ errors, register }: PriceSectionProps) {
         {errors.price && (
           <ErrorMessage
             message={
-              errors.price.message ? errors.price.message : validationInfo.undefined
+              errors.price.message
+                ? errors.price.message
+                : validationInfo.undefined
             }
           />
         )}
       </div>
+    </section>
   );
 }
 
-export default PriceSection
+export default PriceSection;
