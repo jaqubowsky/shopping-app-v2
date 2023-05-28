@@ -14,7 +14,8 @@ export const validationInfo = {
     },
     tooLong: {
       description: "Description must be less than 500 characters long.",
-    }
+      name: "Name must be less than 100 characters long.",
+    },
   },
   undefined: "Undefined error",
 };
