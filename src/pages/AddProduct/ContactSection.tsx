@@ -11,63 +11,69 @@ type AddProductFormProps = {
 
 function ContactSection({ register, errors }: AddProductFormProps) {
   return (
-    <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4 ">
+    <section className="form-section">
       <h2 className="text-xl">Enter the contact details</h2>
-      <div className="flex flex-col items-center gap-6">
-        <Input
-          color="amber"
-          label="Email"
-          className="disabled:cursor-not-allowed"
-          disabled
-          {...register("email", {
-            required: validationInfo.required.email,
-            pattern: /\S+@\S+\.\S+/,
-          })}
-        />
-        {errors.email && (
-          <ErrorMessage
-            message={
-              errors.email.message
-                ? errors.email.message
-                : validationInfo.undefined
-            }
+      <div className="inputs-box lg:flex-row">
+        <div className="input-box">
+          <Input
+            color="amber"
+            label="Email"
+            className="disabled:cursor-not-allowed"
+            disabled
+            {...register("email", {
+              required: validationInfo.required.email,
+              pattern: /\S+@\S+\.\S+/,
+            })}
           />
-        )}
-        <Input
-          color="amber"
-          label="Number"
-          type="number"
-          {...register("phoneNumber", {
-            required: validationInfo.required.phoneNumber,
-          })}
-        />
-        {errors.phoneNumber && (
-          <ErrorMessage
-            message={
-              errors.phoneNumber.message
-                ? errors.phoneNumber.message
-                : validationInfo.undefined
-            }
+          {errors.email && (
+            <ErrorMessage
+              message={
+                errors.email.message
+                  ? errors.email.message
+                  : validationInfo.undefined
+              }
+            />
+          )}
+        </div>
+        <div className="input-box">
+          <Input
+            color="amber"
+            label="Number"
+            type="number"
+            {...register("phoneNumber", {
+              required: validationInfo.required.phoneNumber,
+            })}
           />
-        )}
-        <Input
-          color="amber"
-          label="Location"
-          {...register("location", {
-            required: validationInfo.required.location,
-          })}
-        />
-        {errors.location && (
-          <ErrorMessage
-            message={
-              errors.location.message
-                ? errors.location.message
-                : validationInfo.undefined
-            }
+          {errors.phoneNumber && (
+            <ErrorMessage
+              message={
+                errors.phoneNumber.message
+                  ? errors.phoneNumber.message
+                  : validationInfo.undefined
+              }
+            />
+          )}
+        </div>
+        <div className="input-box">
+          <Input
+            color="amber"
+            label="Location"
+            {...register("location", {
+              required: validationInfo.required.location,
+            })}
           />
-        )}
+          {errors.location && (
+            <ErrorMessage
+              message={
+                errors.location.message
+                  ? errors.location.message
+                  : validationInfo.undefined
+              }
+            />
+          )}
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 

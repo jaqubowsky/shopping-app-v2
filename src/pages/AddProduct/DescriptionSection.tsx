@@ -11,9 +11,9 @@ type DescriptionSectionProps = {
 
 function DescriptionSection({ register, errors }: DescriptionSectionProps) {
   return (
-    <div className="mb-4 flex flex-col gap-8 rounded-sm bg-gray-100 p-4">
-      <div className="flex items-center flex-col">
-        <h2 className="mb-5 text-xl">Description</h2>
+    <section className="form-section">
+      <h2 className="text-xl">Description</h2>
+      <div className="input-box">
         <Textarea
           color="amber"
           variant="static"
@@ -38,7 +38,7 @@ function DescriptionSection({ register, errors }: DescriptionSectionProps) {
           />
         )}
       </div>
-    </div>
+    </section>
   );
 }
 

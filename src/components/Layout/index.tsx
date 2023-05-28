@@ -54,7 +54,7 @@ export default function Layout({userData}: LayoutProps) {
           <AddProductIcon />
         </NavBar>
       </header>
-      <main className="mx-auto p-2 my-48 flex w-11/12 items-center justify-center">
+      <main className="my-48 flex items-center justify-center">
         <Outlet />
       </main>
       <UserOptionsModal
