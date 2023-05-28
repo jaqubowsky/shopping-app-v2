@@ -18,5 +18,21 @@
 }
 
 .main-button-reverse {
-  @apply rounded-md bg-gray-50 shadow-lg p-2 font-bold text-yellow-800 transition-all hover:scale-105 hover:bg-white;
+  @apply rounded-md bg-gray-50 p-2 font-bold text-yellow-800 shadow-lg transition-all hover:scale-105 hover:bg-white;
+}
+
+.product-section {
+  @apply flex flex-col bg-gray-100 p-2 drop-shadow-lg;
+}
+
+.form-section {
+  @apply mb-4 flex flex-col gap-6 rounded-sm bg-gray-100 p-4;
+}
+
+.inputs-box {
+  @apply flex flex-col items-center gap-4 md:items-start;
+}
+
+.input-box {
+  @apply flex flex-col w-full gap-2 items-start justify-center
 }
