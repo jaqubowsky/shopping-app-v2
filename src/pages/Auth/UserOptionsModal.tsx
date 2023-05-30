@@ -1,11 +1,14 @@
 import ModalPortal from "../../components/Modal/ModalPortal";
 import ModalWrapper from "../../components/Modal/ModalWrapper";
 import { motion } from "framer-motion";
-import { NavLink, useNavigate } from "react-router-dom";
-import { signOut } from "../../api/userApi";
+import { NavLink } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { UserResponse } from "../../types/user";
 import { notify } from "../../components/PopUp/Notification";
+import { useMutation } from "@tanstack/react-query";
+import useUserContext from "../../context/UserContext";
+import { signOut } from "../../api/userApi";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 type UserOptionsModal = {
   toggleLoginDropdown: () => void;
@@ -24,16 +27,32 @@ function UserOptionsModal({
     exit: { x: 1000, transition: { duration: 0.5 } },
   };
 
-  const isLoggedIn = userData?.user === null ? false : true;
-  const navigate = useNavigate();
+  const { isLoggedIn, refetch } = useUserContext();
+
+  const logOutMutation = useMutation(signOut, {
+    onSuccess: () => {
+      refetch()
+        .then(() => {
+          notify({ message: "Logged out successfully!", type: "success" });
+        })
+        .catch(() => {
+          notify({
+            message: "Something went wrong while logging out!",
+            type: "error",
+          });
+        });
+    },
+  });
+
+  const handleLogOut = async () => {
+    await logOutMutation.mutateAsync();
+  };
 
   async function logOutUser() {
     try {
-      await signOut();
-      navigate(0);
-      notify({ message: "Logged out successfully!", type: "success" });
+      await handleLogOut();
     } catch (err) {
-      notify({ message: err.message, type: "error" });
+      notify({ message: getErrorMessage(err), type: "error" });
     } finally {
       toggleLoginDropdown();
     }

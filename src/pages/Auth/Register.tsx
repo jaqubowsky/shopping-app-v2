@@ -46,6 +46,7 @@ export default function Register() {
       await registerWithEmailAndPassword(registerValues);
       notify({ message: "Registered successfully!", type: "success" });
     } catch (err) {
+      notify({ message: err.message, type: "error" });
     }
   };
 

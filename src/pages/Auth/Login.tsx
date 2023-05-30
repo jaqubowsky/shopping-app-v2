@@ -1,11 +1,14 @@
 import { Input, Button, Typography } from "@material-tailwind/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { onPromise } from "../../utils/onPromise";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
-import { loginWithEmailAndPassword } from "../../api/userApi";
 import { notify } from "../../components/PopUp/Notification";
+import useUserContext from "../../context/UserContext";
+import { loginWithEmailAndPassword } from "../../api/userApi";
+import { useMutation } from "@tanstack/react-query";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 type Inputs = {
   e?: Event;
@@ -19,18 +22,38 @@ export default function Login() {
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
-  const navigate = useNavigate();
+
+  const { refetch } = useUserContext();
+
+  const loginMutation = useMutation(loginWithEmailAndPassword, {
+    onSuccess: () => {
+      refetch()
+        .then(() => {
+          notify({ message: "Logged in successfully!", type: "success" });
+        })
+        .catch(() =>
+          notify({
+            message: "Something went wrong while logging in!",
+            type: "error",
+          })
+        );
+    },
+  });
+
+  const handleLogin = async (formValues: {
+    email: string;
+    password: string;
+  }) => {
+    await loginMutation.mutateAsync(formValues);
+  };
 
   const onSubmit: SubmitHandler<Inputs> = async ({ email, password }, e) => {
     e?.preventDefault();
     try {
       const formValues = { email, password };
-
-      await loginWithEmailAndPassword(formValues);
-      navigate(0);
-      notify({ message: "Logged in successfully!", type: "success" });
+      await handleLogin(formValues);
     } catch (err) {
-      notify({ message: err.message, type: "error" });
+      notify({ message: getErrorMessage(err), type: "error" });
     }
   };
 
