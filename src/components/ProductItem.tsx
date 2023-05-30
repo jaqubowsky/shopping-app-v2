@@ -1,7 +1,13 @@
 import { Link } from "react-router-dom";
 import { Product } from "../types/product";
 
-function ProductItem({ product, main }: { product: Product; main?: boolean }) {
+type ProductItemProps = {
+  product: Product;
+  main?: boolean;
+  handleDeleteProduct: (id: string) => void;
+};
+
+function ProductItem({ product, main, handleDeleteProduct }: ProductItemProps) {
   const createdAt = new Date(product.createdAt).toLocaleDateString();
   let shortenedDescription = "";
 
@@ -14,7 +20,7 @@ function ProductItem({ product, main }: { product: Product; main?: boolean }) {
       className="flex flex-col items-start justify-center border border-gray-300 p-6 shadow-md transition-all duration-300 hover:border-gray-400 hover:shadow-2xl"
       key={product.id}
     >
-      <div className="mb-8 flex h-80 w-64 items-center self-center border-b border-b-gray-300 cursor-pointer">
+      <div className="mb-8 flex h-80 w-64 cursor-pointer items-center self-center border-b border-b-gray-300">
         <Link to={`/products/${product.id}`}>
           <img
             className="h-full w-full object-cover"
@@ -37,8 +43,18 @@ function ProductItem({ product, main }: { product: Product; main?: boolean }) {
         )}
         {!main && (
           <div className="flex w-full">
-            <button className="main-button-reverse my-2 w-full">Edit</button>
-            <button className="main-button my-2 w-full">Delete</button>
+            <Link
+              className="main-button-reverse my-2 w-full"
+              to={`/edit-product/${product.id}`}
+            >
+              Edit
+            </Link>
+            <button
+              className="main-button my-2 w-full"
+              onClick={() => handleDeleteProduct(product.id)}
+            >
+              Delete
+            </button>
           </div>
         )}
       </div>
