@@ -3,22 +3,15 @@ import { getUserProduct } from "../../api/productsApi";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { ProductData } from "../../types/product";
 import { GoLocation } from "react-icons/go";
-import { AiOutlinePhone } from "react-icons/ai";
 import imgUrl from "../../assets/location.jpg";
 import { getUserById } from "../../api/userApi";
 import { OtherUserResponse } from "../../types/user";
-import { notify } from "../../components/PopUp/Notification";
 import Spinner from "../../components/Spinner";
 
 function ProductPage() {
   const params = useParams();
   const productId = params.id || "";
 
-  const copyToClipboard = (textToCopy: string | number) => {
-    //eslint-disable-next-line
-    navigator.clipboard.writeText(String(textToCopy));
-    notify({ message: "Copied to clipboard", type: "success" });
-  };
 
   const {
     data: productData,
@@ -58,7 +51,7 @@ function ProductPage() {
             <h2 className="mb-2 break-all text-xl">{product.name}</h2>
             <p className="mb-2 text-2xl font-bold italic">${product.price}</p>
           </section>
-          
+
           {/* contact */}
           <section className="product-section h-3/4">
             <span>Private person</span>
@@ -88,7 +81,7 @@ function ProductPage() {
       {/* description */}
       <section className="product-section md:w-3/4">
         <h2 className="mb-2 text-xl">Description</h2>
-        <p className="mb-2">{product.description}</p>
+        <p className="mb-2 break-words p-2">{product.description}</p>
       </section>
 
       {/* location */}
