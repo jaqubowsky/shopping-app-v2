@@ -3,7 +3,7 @@ import NavBar from "./NavBar";
 import { useEffect, useState } from "react";
 import CartModal from "../../pages/Cart/CartModal";
 import UserIcon from "./UserIcon";
-import UserOptionsModal from "../../pages/Login/UserOptionsModal";
+import UserOptionsModal from "../../pages/Auth/UserOptionsModal";
 import CartIcon from "./CartIcon";
 import AddProductIcon from "./AddProductIcon";
 import { UserResponse } from "../../types/user";
