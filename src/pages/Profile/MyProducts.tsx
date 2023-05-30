@@ -1,21 +1,51 @@
-import { getUserProducts } from "../../api/productsApi";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
+import {
+  deleteProduct,
+  getUserProducts,
+} from "../../api/productsApi";
+import { useQuery, UseQueryResult, useMutation } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
 import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ProductItem from "../../components/ProductItem";
+import { notify } from "../../components/PopUp/Notification";
 
 export default function MyProducts() {
-  const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
+  const { data, isLoading, refetch }: UseQueryResult<ProductsData> = useQuery({
     queryKey: ["userProducts"],
     queryFn: getUserProducts,
   });
 
-  if (isLoading) return <Spinner />;
+  const deleteProductMutation = useMutation(deleteProduct, {
+    onSuccess: () => {
+      refetch()
+        .then(() =>
+          notify({ message: "Product deleted successfully!", type: "success" })
+        )
+        .catch(() =>
+          notify({
+            message: "Something went wrong while deleting!",
+            type: "error",
+          })
+        );
+    },
+  });
+
+  if (isLoading || deleteProductMutation.isLoading) return <Spinner />;
+
+  const handleDeleteProduct = (productId: string) => {
+    deleteProductMutation.mutate(productId);
+  };
+
 
   const userProductsEl = data?.products.map((product) => {
-    return <ProductItem product={product} key={product.id} />;
+    return (
+      <ProductItem
+        handleDeleteProduct={handleDeleteProduct}
+        product={product}
+        key={product.id}
+      />
+    );
   });
 
   if (!userProductsEl || userProductsEl.length === 0)
