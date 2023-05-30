@@ -16,9 +16,34 @@ const all = axios.create({
 
 export const addProduct = async (
   formData: FormData
-): Promise<{ data: Product; status: number }> => {
+): Promise<{ data: Product }> => {
   try {
     return await api.post("/product", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      // eslint-disable-next-line
+      throw new Error(err.response?.data);
+    } else {
+      throw new Error("Unexpected error");
+    }
+  }
+};
+
+type EditProductProps = {
+  formData: FormData;
+  productId: string;
+};
+
+export const editProduct = async ({
+  formData,
+  productId,
+}: EditProductProps): Promise<{ data: Product }> => {
+  try {
+    return await api.put(`/product/${productId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -74,6 +99,19 @@ export const getUserProduct = async (id: string): Promise<Product[]> => {
     const product = response.data;
 
     return product;
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err)) {
+      // eslint-disable-next-line
+      throw new Error(err.response?.data);
+    } else {
+      throw new Error("Unexpected error");
+    }
+  }
+};
+
+export const deleteProduct = async (id: string) => {
+  try {
+    return await api.delete(`/product/${id}`);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
