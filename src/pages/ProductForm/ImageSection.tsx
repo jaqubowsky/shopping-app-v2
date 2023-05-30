@@ -1,8 +1,8 @@
 import { FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormInputs } from ".";
 import { FormEvent } from "react";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
+import { FormInputs } from "../../types/form";
 
 type ImageSectionProps = {
   previewImage: string;
@@ -38,7 +38,7 @@ function ImageSection({
               type="file"
               className="absolute inset-0 z-[-1] opacity-0"
               {...register("image", {
-                required: validationInfo.required.image,
+                required: !previewImage && validationInfo.required.image,
               })}
             />
             {errors.image && (

@@ -1,25 +1,28 @@
 import { FormEvent, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { addProduct } from "../../api/productsApi";
-import AddProductForm from "./AddProductForm";
-import { checkLoginStatus } from "../../api/userApi";
-import { notify } from "../../components/PopUp/Notification";
-import Spinner from "../../components/Spinner";
+import { addProduct } from "../../../api/productsApi";
+import AddProductForm from "../AddProductForm";
+import { notify } from "../../../components/PopUp/Notification";
+import Spinner from "../../../components/Spinner";
+import { useMutation } from "@tanstack/react-query";
+import { getErrorMessage } from "../../../utils/getErrorMessage";
+import { FormInputs } from "../../../types/form";
+import useUserContext from "../../../context/UserContext";
 
-export type FormInputs = {
-  name: string;
-  description: string;
-  price: number | null;
-  category: string;
-  image?: FileList;
-  email: string;
-  phoneNumber: number;
-  location: string;
-};
-
-export default function AddProduct() {
+export function AddProduct() {
   const [previewImage, setPreviewImage] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { userData } = useUserContext();
+
+  const defaultValues = {
+    name: "",
+    description: "",
+    price: 0,
+    image: undefined,
+    category: undefined,
+    email: userData?.user?.email || "",
+    phoneNumber: userData?.user?.phoneNumber || 0,
+    location: userData?.user?.location || "",
+  };
 
   const {
     register,
@@ -28,18 +31,7 @@ export default function AddProduct() {
     reset,
     formState: { errors },
   } = useForm<FormInputs>({
-    defaultValues: async () => {
-      const data = await checkLoginStatus();
-      return {
-        name: "",
-        description: "",
-        price: null,
-        category: "",
-        email: data?.user.email || "",
-        phoneNumber: data?.user.phoneNumber || 0,
-        location: data?.user.location || "",
-      };
-    },
+    defaultValues: defaultValues,
   });
 
   const handleImageChange = (event: FormEvent<HTMLInputElement>) => {
@@ -66,18 +58,23 @@ export default function AddProduct() {
 
       return setPreviewImage("");
     } catch (err) {
-      notify({ message: err.message, type: "error" });
+      notify({ message: getErrorMessage(err), type: "error" });
     }
   };
 
-  const handleAddProduct = async (formData: FormData) => {
-    await addProduct(formData).then((resp) => {
-      if (resp.status === 201) {
-        setIsLoading(false);
-        setPreviewImage("");
-        reset();
-      }
-    });
+  const addProductMutation = useMutation(addProduct, {
+    onSuccess: () => {
+      notify({ message: "Product added successfully!", type: "success" });
+    },
+    onError: (err) => {
+      notify({ message: getErrorMessage(err), type: "error" });
+    },
+  });
+
+  const handleAddProduct = (formData: FormData) => {
+    addProductMutation.mutate(formData);
+    setPreviewImage("");
+    reset();
   };
 
   const compileFormData = ({
@@ -93,21 +90,27 @@ export default function AddProduct() {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("description", description);
-    formData.append("category", category);
-    if (price) {
-      formData.append("price", price.toString());
+
+    if (category) {
+      formData.append("category", category);
     }
+
+    formData.append("price", price.toString());
+
     if (image) {
       formData.append("image", image[0]);
     }
-    formData.append("email", email);
+
+    if (email) {
+      formData.append("email", email);
+    }
     formData.append("location", location);
     formData.append("phoneNumber", phoneNumber.toString());
 
     return formData;
   };
 
-  const onSubmit: SubmitHandler<FormInputs> = async ({
+  const onSubmit: SubmitHandler<FormInputs> = ({
     name,
     description,
     category,
@@ -128,15 +131,13 @@ export default function AddProduct() {
         location,
         phoneNumber,
       });
-      setIsLoading(true);
-      await handleAddProduct(formData);
-      notify({ message: "Product added successfully!", type: "success" });
+      handleAddProduct(formData);
     } catch (err) {
-      notify({ message: err.message, type: "error" });
+      notify({ message: getErrorMessage(err), type: "error" });
     }
   };
 
-  if (isLoading) {
+  if (addProductMutation.isLoading) {
     return <Spinner />;
   }
 

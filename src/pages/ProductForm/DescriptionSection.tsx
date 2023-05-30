@@ -1,6 +1,6 @@
 import { Textarea } from "@material-tailwind/react";
 import { ErrorMessage } from "../../components/ErrorMessage";
-import { FormInputs } from ".";
+import { FormInputs } from "../../types/form";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { validationInfo } from "./validationInfo";
 

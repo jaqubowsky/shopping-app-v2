@@ -1,12 +1,12 @@
 import { Input } from "@material-tailwind/react";
 import { ErrorMessage } from "../../components/ErrorMessage";
-import { FormInputs } from ".";
+import { FormInputs } from "../../types/form";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { validationInfo } from "./validationInfo";
 
 type PriceSectionProps = {
-  register: UseFormRegister<FormInputs>;
-  errors: FieldErrors<FormInputs>;
+  register: UseFormRegister<FormInputs >;
+  errors: FieldErrors<FormInputs >;
 };
 
 function PriceSection({ errors, register }: PriceSectionProps) {
@@ -18,6 +18,7 @@ function PriceSection({ errors, register }: PriceSectionProps) {
           color="amber"
           label="Price"
           icon="$"
+          type="number"
           {...register("price", {
             required: validationInfo.required.price,
           })}

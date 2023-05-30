@@ -1,5 +1,5 @@
 import { onPromise } from "../../utils/onPromise";
-import { FormInputs } from ".";
+import { FormInputs } from "../../types/form";
 import {
   Control,
   FieldErrors,
@@ -32,7 +32,6 @@ export default function AddProductForm({
   previewImage,
   onSubmit,
 }: AddProductFormProps) {
-
   return (
     <form
       className="mt-8 flex w-full flex-col gap-2"

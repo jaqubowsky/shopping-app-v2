@@ -1,7 +1,7 @@
 import { Input } from "@material-tailwind/react";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import { FormInputs } from ".";
+import { FormInputs } from "../../types/form";
 import SelectCategorySection from "./SelectCategorySection";
 import { validationInfo } from "./validationInfo";
 
