@@ -22,7 +22,7 @@ import { checkLoginStatus } from "./api/userApi";
 import "react-toastify/dist/ReactToastify.css";
 import Notification from "./components/PopUp/Notification";
 import { UserContext } from "./context/UserContext";
-import Products from "./pages/Products.tsx";
+import Products from "./pages/Products/index.tsx";
 
 function App() {
   const { data: userData, refetch }: UseQueryResult<UserResponse> = useQuery({
