@@ -34,5 +34,5 @@
 }
 
 .input-box {
-  @apply flex flex-col w-full gap-2 items-start justify-center
+  @apply flex flex-col w-full gap-2 items-center justify-center
 }
