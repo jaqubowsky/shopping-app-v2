@@ -1,15 +1,19 @@
 import { Link } from "react-router-dom";
 import { PropsWithChildren } from "react";
+import BreadcrumbsComponent from "../Breadcrumbs";
 
 function NavBar({ children }: PropsWithChildren) {
+  const isMobile = window.screen.width < 600;
+
   return (
-    <nav className="mx-auto flex w-11/12 flex-col items-center justify-around gap-2">
-      <div className="flex items-center gap-6">
-        <Link className="flex text-5xl font-black" to=".">
+    <nav className="mx-auto flex w-11/12 flex-col items-center justify-around gap-2 md:flex-row">
+      <div className="flex items-center gap-6 hover:scale-105 transition-all">
+        <Link className="flex text-5xl font-black text-gray-800" to="." replace>
           Fake <span className="text-white drop-shadow-md">Store</span>
         </Link>
       </div>
-      <div className="hover flex flex-col items-center justify-center gap-6 text-lg">
+      {!isMobile && <BreadcrumbsComponent /> }
+      <div className="hover flex items-center justify-center gap-6 text-lg">
         <section className="flex gap-6">{children}</section>
       </div>
     </nav>
