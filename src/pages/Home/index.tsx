@@ -1,28 +1,48 @@
-import { getProducts } from "../../api/productsApi";
-import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { ProductsData } from "../../types/product";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
-import Spinner from "../../components/Spinner";
-import ProductItem from "../../components/ProductItem";
+import { BiConfused } from "react-icons/bi";
 
 export default function Home() {
-  const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
-    queryKey: ["products"],
-    queryFn: getProducts,
-  });
+  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
-  if (isLoading) return <Spinner />;
-
-  const allProductsEl = data?.products.map((product) => {
-    return <ProductItem main product={product} key={product.id} />;
-  });
+  const categories = [
+    "Other",
+    "Clothes",
+    "electronics",
+    "motorization",
+    "home-and-garden",
+    "real-estate",
+    "education",
+    "kids",
+    "animals",
+    "sport-and-hobby",
+    "health-and-beauty",
+  ];
 
   return (
-    <div className="text-center">
-      <SearchBar placeholder="Search..." />
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {allProductsEl}
+    <>
+      <SearchBar searchParams={searchParams} />
+      <div className="flex flex-col items-center justify-center">
+        <h2 className="text-3xl">
+          Main{" "}
+          <span className="text-yellow-800 drop-shadow-lg">categories</span>
+        </h2>
       </div>
-    </div>
+      <div>
+        <div className="hover: my-6 grid grid-cols-5 justify-center gap-6">
+          {categories.map((category) => (
+            <button
+              onClick={() => navigate(`/products/?category=${category}`)}
+              key={category}
+              className="flex cursor-pointer flex-col items-center justify-center rounded-full px-2 py-9 transition-all hover:bg-gray-300"
+            >
+              <BiConfused className="mb-2 text-6xl" />
+              <p className="text-gray-800">{category}</p>
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }
