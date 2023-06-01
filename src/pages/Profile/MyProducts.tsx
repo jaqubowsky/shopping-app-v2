@@ -1,7 +1,4 @@
-import {
-  deleteProduct,
-  getUserProducts,
-} from "../../api/productsApi";
+import { deleteProduct, getUserProducts } from "../../api/productsApi";
 import { useQuery, UseQueryResult, useMutation } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
@@ -9,12 +6,25 @@ import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ProductItem from "../../components/ProductItem";
 import { notify } from "../../components/PopUp/Notification";
+import { useSearchParams } from "react-router-dom";
 
 export default function MyProducts() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const { data, isLoading, refetch }: UseQueryResult<ProductsData> = useQuery({
     queryKey: ["userProducts"],
     queryFn: getUserProducts,
   });
+
+  const clearSearchParams = () => {
+    setSearchParams({ search: "" });
+  };
+
+  const filteredProducts = data?.products.filter((product) =>
+    product.name
+      .toLowerCase()
+      .includes(searchParams.get("search")?.toLowerCase() || "")
+  );
 
   const deleteProductMutation = useMutation(deleteProduct, {
     onSuccess: () => {
@@ -37,8 +47,7 @@ export default function MyProducts() {
     deleteProductMutation.mutate(productId);
   };
 
-
-  const userProductsEl = data?.products.map((product) => {
+  const userProductsEl = filteredProducts?.map((product) => {
     return (
       <ProductItem
         handleDeleteProduct={handleDeleteProduct}
@@ -48,7 +57,10 @@ export default function MyProducts() {
     );
   });
 
-  if (!userProductsEl || userProductsEl.length === 0)
+  if (
+    !userProductsEl ||
+    (userProductsEl.length === 0 && !searchParams.get("search"))
+  )
     return (
       <div className="flex flex-col items-center justify-center">
         <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
@@ -59,9 +71,12 @@ export default function MyProducts() {
     );
 
   return (
-    <div>
-      <SearchBar placeholder="Search your products..." />
-
+    <div className="flex flex-col items-center justify-center">
+      <SearchBar
+        clearSearchParams={clearSearchParams}
+        searchParams={searchParams.get("search")}
+        placeholder="Search your products..."
+      />
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {userProductsEl}
       </div>
