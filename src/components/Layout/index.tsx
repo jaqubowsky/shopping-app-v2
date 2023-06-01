@@ -44,17 +44,21 @@ export default function Layout({userData}: LayoutProps) {
   return (
     <>
       <header
-        className={`fixed w-full bg-yellow-600 p-6 transition-all duration-300 z-50 ${
+        className={`fixed z-50 w-full bg-yellow-600 p-6 transition-all duration-300 ${
           showNavBar ? "top-0" : "-top-48"
         }`}
       >
         <NavBar>
           <CartIcon toggleCart={toggleCart} />
-          <UserIcon toggleLoginDropdown={toggleLoginDropdown} userData={userData} />
+          <UserIcon
+            toggleLoginDropdown={toggleLoginDropdown}
+            userData={userData}
+          />
           <AddProductIcon />
         </NavBar>
       </header>
-      <main className="my-48 flex items-center justify-center">
+
+      <main className="my-48 md:my-32 flex flex-col items-center justify-center">
         <Outlet />
       </main>
       <UserOptionsModal
