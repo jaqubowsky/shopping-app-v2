@@ -4,7 +4,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import Home from "./pages/Home";
+import Home from "./pages/Home/index.tsx";
 import Layout from "./components/Layout";
 import Contact from "./pages/Contact";
 import Register from "./pages/Auth/Register";
@@ -15,13 +15,14 @@ import Profile from "./pages/Profile";
 import MyProducts from "./pages/Profile/MyProducts";
 import { AddProduct } from "./pages/ProductForm/AddProductForm/index";
 import { EditProduct } from "./pages/ProductForm/EditProductForm/index";
-import ProductPage from "./pages/Products/ProductPage";
+import ProductPage from "./pages/Product/ProductPage";
 import { UserResponse } from "./types/user";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
 import { checkLoginStatus } from "./api/userApi";
 import "react-toastify/dist/ReactToastify.css";
 import Notification from "./components/PopUp/Notification";
 import { UserContext } from "./context/UserContext";
+import Products from "./pages/Products.tsx";
 
 function App() {
   const { data: userData, refetch }: UseQueryResult<UserResponse> = useQuery({
@@ -41,6 +42,7 @@ function App() {
     <Route path="/" element={<Layout userData={userData} />}>
       <Route index element={<Home />} />
       <Route path="contact" element={<Contact />} />
+      <Route path="products" element={<Products />} />
       <Route
         path="login"
         element={
