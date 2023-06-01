@@ -4,7 +4,7 @@ import { Product } from "../types/product";
 type ProductItemProps = {
   product: Product;
   main?: boolean;
-  handleDeleteProduct: (id: string) => void;
+  handleDeleteProduct?: (id: string) => void;
 };
 
 function ProductItem({ product, main, handleDeleteProduct }: ProductItemProps) {
@@ -49,12 +49,14 @@ function ProductItem({ product, main, handleDeleteProduct }: ProductItemProps) {
             >
               Edit
             </Link>
-            <button
-              className="main-button my-2 w-full"
-              onClick={() => handleDeleteProduct(product.id)}
-            >
-              Delete
-            </button>
+            {handleDeleteProduct && (
+              <button
+                className="main-button my-2 w-full"
+                onClick={() => handleDeleteProduct(product.id)}
+              >
+                Delete
+              </button>
+            )}
           </div>
         )}
       </div>
