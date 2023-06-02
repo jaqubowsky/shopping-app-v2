@@ -1,13 +1,13 @@
-import { Controller, Control } from "react-hook-form";
+import { Controller, Control, FieldValues} from "react-hook-form";
 import { Select, Option } from "@material-tailwind/react";
-import { FormInputs } from "../../types/form";
 import { validationInfo } from "./validationInfo";
 
-type SelectCategorySectionProps = {
-  control: Control<FormInputs>;
+type SelectCategorySectionProps<T extends FieldValues> = {
+  control: Control<T>;
+  value?: string;
 };
 
-function SelectCategorySection({ control }: SelectCategorySectionProps) {
+function SelectCategorySection<T extends FieldValues>({ control, value }: SelectCategorySectionProps<T>) {
   return (
     <Controller
       control={control}
@@ -17,7 +17,7 @@ function SelectCategorySection({ control }: SelectCategorySectionProps) {
         <Select
           label="Select category"
           color="amber"
-          value={field.value || ""}
+          value={value || field.value}
           onChange={field.onChange}
         >
           <Option value="Other">Other</Option>
