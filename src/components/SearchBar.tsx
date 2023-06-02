@@ -1,33 +1,57 @@
-import { useForm } from "react-hook-form";
+import { useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import SelectCategorySection from "../pages/ProductForm/SelectCategorySection";
+import { useForm } from "react-hook-form";
+import { SearchBarForm } from "../types/form";
 
 type SearchBarProps = {
   placeholder?: string;
+  redirect: string;
   searchParams: URLSearchParams;
-  clearSearchParams?: () => void;
 };
 
 export default function SearchBar({
   placeholder = "Search...",
   searchParams,
-  clearSearchParams,
+  redirect,
 }: SearchBarProps) {
-  const { register, watch, reset } = useForm();
+  const { register, watch, reset, control } = useForm<SearchBarForm>();
   const navigate = useNavigate();
 
   const searchParam = searchParams.get("search");
   const categoryParam = searchParams.get("category");
+  const category = watch("category");
 
-  const redirectPage = `/products?${
-    //eslint-disable-next-line
-    watch("search") ? `search=${watch("search")}&` : ""
-  }${categoryParam ? `category=${categoryParam}` : ""}`;
+const createRedirectPage = useCallback(() => {
+  const currentSearch = watch("search") || searchParam || "";
+  const currentCategory = watch("category") || categoryParam || "";
+
+  return `${redirect}?search=${currentSearch}&category=${currentCategory}`;
+}, [watch, searchParam, categoryParam, redirect]);
+
+  useEffect(() => {
+    if (watch("category")) {
+      const redirectPage = createRedirectPage();
+      navigate(redirectPage);
+    }
+  }, [category, navigate, watch, createRedirectPage]);
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    navigate(redirectPage);
+
+    navigate(createRedirectPage());
+
     reset();
   }
+
+  const clearSearchParams = () => {
+    const newSearchParams = new URLSearchParams(window.location.search);
+    newSearchParams.delete("search");
+
+    const redirectPage = `?${newSearchParams.toString()}`;
+
+    navigate(redirectPage);
+  };
 
   return (
     <div className="flex w-full max-w-screen-lg flex-col p-2">
@@ -37,6 +61,10 @@ export default function SearchBar({
           type="search"
           placeholder={placeholder}
           {...register("search")}
+        />
+        <SelectCategorySection<SearchBarForm>
+          value={categoryParam || ""}
+          control={control}
         />
         <button
           type="submit"
