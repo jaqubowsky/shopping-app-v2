@@ -7,15 +7,7 @@ import ProductItem from "../../components/ProductItem";
 import { useSearchParams } from "react-router-dom";
 
 export default function Products() {
-  const [searchParams, setSearchParams] = useSearchParams();
-
-const clearSearchParams = () => {
-  setSearchParams((prevParams) => {
-    const newParams = new URLSearchParams(prevParams.toString());
-    newParams.set("search", "");
-    return Object.fromEntries(newParams);
-  });
-};
+  const [searchParams] = useSearchParams();
 
   const { data, isLoading }: UseQueryResult<ProductsData> = useQuery({
     queryKey: ["products"],
@@ -45,7 +37,7 @@ const clearSearchParams = () => {
   return (
     <div className="flex flex-col items-center">
       <SearchBar
-        clearSearchParams={clearSearchParams}
+        redirect="/products"
         searchParams={searchParams}
         placeholder="Search..."
       />
