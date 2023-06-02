@@ -41,7 +41,7 @@ function NameSection({ register, errors, control }: NameSectionProps) {
             />
           )}
         </div>
-        <SelectCategorySection control={control} />
+        <SelectCategorySection<FormInputs> control={control} />
       </div>
     </section>
   );
