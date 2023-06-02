@@ -8,3 +8,8 @@ export type FormInputs = {
   phoneNumber: number;
   location: string;
 };
+
+export type SearchBarForm = {
+  search: string;
+  category: string;
+};
