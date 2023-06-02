@@ -9,16 +9,12 @@ import { notify } from "../../components/PopUp/Notification";
 import { useSearchParams } from "react-router-dom";
 
 export default function MyProducts() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   const { data, isLoading, refetch }: UseQueryResult<ProductsData> = useQuery({
     queryKey: ["userProducts"],
     queryFn: getUserProducts,
   });
-
-  const clearSearchParams = () => {
-    setSearchParams({ search: "" });
-  };
 
   const filteredProducts = data?.products.filter((product) =>
     product.name
@@ -57,6 +53,7 @@ export default function MyProducts() {
     );
   });
 
+
   if (
     !userProductsEl ||
     (userProductsEl.length === 0 && !searchParams.get("search"))
@@ -73,7 +70,7 @@ export default function MyProducts() {
   return (
     <div className="flex flex-col items-center justify-center">
       <SearchBar
-        clearSearchParams={clearSearchParams}
+        redirect="/profile/my-products"
         searchParams={searchParams}
         placeholder="Search your products..."
       />
