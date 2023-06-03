@@ -6,6 +6,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
 import { notify } from "../../components/PopUp/Notification";
+import { getErrorMessage } from "../../utils/getErrorMessage";
 
 type Inputs = {
   e?: Event;
@@ -46,7 +47,7 @@ export default function Register() {
       await registerWithEmailAndPassword(registerValues);
       notify({ message: "Registered successfully!", type: "success" });
     } catch (err) {
-      notify({ message: err.message, type: "error" });
+      notify({ message: getErrorMessage(err), type: "error" });
     }
   };
 
@@ -58,16 +59,14 @@ export default function Register() {
       <Typography color="gray" className="mt-1 font-normal">
         Enter your details to register.
       </Typography>
-      <form
-        onSubmit={onPromise(handleSubmit(onSubmit))}
-        className="mb-2 mt-8"
-      >
+      <form onSubmit={onPromise(handleSubmit(onSubmit))} className="mb-2 mt-8">
         <div className="mb-4 flex flex-col gap-2">
           <div className="flex flex-col gap-3">
             <Input
               type="text"
               size="lg"
               label="Name"
+              color="amber"
               {...register("name", {
                 required: validationInfo.required.username,
               })}
@@ -84,6 +83,7 @@ export default function Register() {
             <Input
               type="text"
               size="lg"
+              color="amber"
               label="Surname"
               {...register("surname", {
                 required: validationInfo.required.surname,
@@ -101,6 +101,7 @@ export default function Register() {
             <Input
               type="number"
               size="lg"
+              color="amber"
               label="Number"
               {...register("phoneNumber", {
                 required: validationInfo.required.phoneNumber,
@@ -118,6 +119,7 @@ export default function Register() {
             <Input
               type="text"
               size="lg"
+              color="amber"
               label="Location"
               {...register("location", {
                 required: validationInfo.required.surname,
@@ -137,6 +139,7 @@ export default function Register() {
             <Input
               type="text"
               size="lg"
+              color="amber"
               label="Username"
               {...register("username", {
                 required: validationInfo.required.username,
@@ -154,6 +157,7 @@ export default function Register() {
             <Input
               type="email"
               size="lg"
+              color="amber"
               label="Email"
               {...register("email", {
                 required: validationInfo.required.email,
@@ -174,6 +178,7 @@ export default function Register() {
             )}
             <Input
               type="password"
+              color="amber"
               size="lg"
               label="Password"
               {...register("password", {
@@ -196,6 +201,7 @@ export default function Register() {
             <Input
               type="password"
               size="lg"
+              color="amber"
               label="Verify password"
               {...register("cpassword", {
                 required: validationInfo.required.cpassword,
@@ -220,14 +226,14 @@ export default function Register() {
         <Button className="mt-6" type="submit" color="amber" fullWidth>
           Register
         </Button>
-        <Typography color="gray" className="mt-4 text-center font-normal">
+        <Typography color="gray" className="flex items-center justify-center gap-2 mt-4 font-normal">
           Already have an account?{" "}
           <Link
             to="/login"
             replace
             className="font-medium text-blue-500 transition-colors hover:text-blue-700"
           >
-            Sign In
+            <Typography color="amber">Sign In</Typography>
           </Link>
         </Typography>
       </form>
