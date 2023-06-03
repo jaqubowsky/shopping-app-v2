@@ -2,11 +2,11 @@ import { deleteProduct, getUserProducts } from "../../api/productsApi";
 import { useQuery, UseQueryResult, useMutation } from "@tanstack/react-query";
 import { ProductsData } from "../../types/product";
 import SearchBar from "../../components/SearchBar";
-import { Link } from "react-router-dom";
 import Spinner from "../../components/Spinner";
 import ProductItem from "../../components/ProductItem";
 import { notify } from "../../components/PopUp/Notification";
 import { useSearchParams } from "react-router-dom";
+import NoProductsComponent from "../../components/NoProductsComponent";
 
 export default function MyProducts() {
   const [searchParams] = useSearchParams();
@@ -16,11 +16,19 @@ export default function MyProducts() {
     queryFn: getUserProducts,
   });
 
-  const filteredProducts = data?.products.filter((product) =>
+  let filteredProducts = data?.products.filter((product) =>
     product.name
       .toLowerCase()
       .includes(searchParams.get("search")?.toLowerCase() || "")
   );
+
+  if (searchParams.get("category")) {
+    filteredProducts = filteredProducts?.filter((product) =>
+      product.category
+        .toLowerCase()
+        .includes(searchParams.get("category")?.toLowerCase() || "")
+    );
+  }
 
   const deleteProductMutation = useMutation(deleteProduct, {
     onSuccess: () => {
@@ -53,19 +61,15 @@ export default function MyProducts() {
     );
   });
 
-
-  if (
-    !userProductsEl ||
-    (userProductsEl.length === 0 && !searchParams.get("search"))
-  )
-    return (
-      <div className="flex flex-col items-center justify-center">
-        <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
-        <Link to="/add-product" className="main-button w-8/12">
-          Click here to add one!
-        </Link>
-      </div>
-    );
+  if (!filteredProducts || filteredProducts.length === 0) {
+    if (!searchParams.get("search") && !searchParams.get("category")) {
+      return <NoProductsComponent noProducts />;
+    } else {
+      return (
+        <NoProductsComponent wrongFilters redirectTo="/profile/my-products" />
+      );
+    }
+  }
 
   return (
     <div className="flex flex-col items-center justify-center">
