@@ -71,6 +71,7 @@ export default function Login() {
       >
         <div className="flex w-11/12 flex-col gap-2">
           <Input
+            color="amber"
             type="email"
             size="lg"
             label="Email"
@@ -93,6 +94,7 @@ export default function Login() {
           )}
           <Input
             type="password"
+            color="amber"
             size="lg"
             label="Password"
             {...register("password", {
@@ -111,14 +113,14 @@ export default function Login() {
           <Button className="mt-6" type="submit" color="amber" fullWidth>
             Login
           </Button>
-          <Typography color="gray" className="mt-4 text-center font-normal">
+          <Typography color="gray" className="mt-4 flex gap-2 justify-center items-center font-normal">
             Do not have an account?{" "}
             <Link
               to="/register"
               replace
               className="font-medium text-blue-500 transition-colors hover:text-blue-700"
             >
-              Sign Up
+              <Typography color="amber">Sign Up </Typography>
             </Link>
           </Typography>
         </div>
