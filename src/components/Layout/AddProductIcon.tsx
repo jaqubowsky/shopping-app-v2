@@ -14,6 +14,7 @@ function AddProductIcon() {
     <Link
       to="/add-product"
       role="button"
+      aria-label="add product"
       tabIndex={0}
       onKeyDown={handleEnterPress}
       className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-white p-4 text-center shadow-md"
