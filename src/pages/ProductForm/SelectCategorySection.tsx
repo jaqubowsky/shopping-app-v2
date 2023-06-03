@@ -17,6 +17,8 @@ function SelectCategorySection<T extends FieldValues>({ control, value }: Select
         <Select
           label="Select category"
           color="amber"
+          aria-label="Select category"
+          className="rounded-none"
           value={value || field.value}
           onChange={field.onChange}
         >
