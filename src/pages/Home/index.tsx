@@ -1,6 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import SearchBar from "../../components/SearchBar";
-import { BiConfused } from "react-icons/bi";
+import IconComponent from "../../components/IconComponent";
 
 export default function Home() {
   const [searchParams] = useSearchParams();
@@ -9,15 +9,15 @@ export default function Home() {
   const categories = [
     "Other",
     "Clothes",
-    "electronics",
-    "motorization",
-    "home-and-garden",
-    "real-estate",
-    "education",
-    "kids",
-    "animals",
-    "sport-and-hobby",
-    "health-and-beauty",
+    "Electronics",
+    "Motorization",
+    "Home and Garden",
+    "Real Estate",
+    "Education",
+    "Kids",
+    "Animals",
+    "Sport and Hobby",
+    "Health and Beauty",
   ];
 
   return (
@@ -30,14 +30,14 @@ export default function Home() {
         </h2>
       </div>
       <div>
-        <div className="hover: my-6 grid grid-cols-5 justify-center gap-6">
+        <div className="hover: my-6 grid grid-cols-1 md:grid-cols-4 justify-center gap-6">
           {categories.map((category) => (
             <button
               onClick={() => navigate(`/products/?category=${category}`)}
               key={category}
-              className="flex cursor-pointer flex-col items-center justify-center rounded-full px-2 py-9 transition-all hover:bg-gray-300"
+              className="p-4 flex cursor-pointer flex-col items-center justify-center transition-all hover:border-b hover:border-b-yellow-800"
             >
-              <BiConfused className="mb-2 text-6xl" />
+              <IconComponent category={category} />
               <p className="text-gray-800">{category}</p>
             </button>
           ))}
