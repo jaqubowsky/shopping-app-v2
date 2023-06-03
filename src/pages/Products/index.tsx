@@ -5,6 +5,7 @@ import SearchBar from "../../components/SearchBar";
 import Spinner from "../../components/Spinner";
 import ProductItem from "../../components/ProductItem";
 import { useSearchParams } from "react-router-dom";
+import NoProductsComponent from "../../components/NoProductsComponent";
 
 export default function Products() {
   const [searchParams] = useSearchParams();
@@ -33,6 +34,14 @@ export default function Products() {
   const allProductsEl = filteredProducts?.map((product) => {
     return <ProductItem main product={product} key={product.id} />;
   });
+
+  if (!filteredProducts || filteredProducts.length === 0) {
+    if (searchParams.get("search") || searchParams.get("category")) {
+      return (
+        <NoProductsComponent wrongFilters redirectTo="/" />
+      );
+    }
+  }
 
   return (
     <div className="flex flex-col items-center">
