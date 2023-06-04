@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 type NoProductsComponentProps = {
   noProducts?: boolean;
@@ -15,7 +15,13 @@ type NoProductsComponentProps = {
     }
 );
 
-export default function NoProductsComponent({noProducts, wrongFilters, redirectTo}: NoProductsComponentProps) {
+export default function NoProductsComponent({noProducts, wrongFilters}: NoProductsComponentProps) {
+  const [_, setSearchParams] = useSearchParams();
+
+  const clearFilters = () => {
+    setSearchParams({ search: "", category: "" });
+  }
+
   if (noProducts) {
 return (
   <div className="flex flex-col items-center justify-center">
@@ -33,9 +39,9 @@ return (
         <h2 className="mb-8 text-4xl font-bold">
           No products found with these filters!
         </h2>
-        <Link to={redirectTo || "/"} replace className="main-button w-8/12">
+        <button onClick={() => clearFilters()} className="main-button w-8/12">
           Clear filters
-        </Link>
+        </button>
       </div>
     );
   }
