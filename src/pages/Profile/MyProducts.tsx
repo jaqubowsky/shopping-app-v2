@@ -61,26 +61,21 @@ export default function MyProducts() {
     );
   });
 
-  if (!filteredProducts || filteredProducts.length === 0) {
-    if (!searchParams.get("search") && !searchParams.get("category")) {
-      return <NoProductsComponent noProducts />;
-    } else {
-      return (
-        <NoProductsComponent wrongFilters redirectTo="/profile/my-products" />
-      );
-    }
-  }
+  const noProducts = !filteredProducts || filteredProducts.length === 0;
+  const wrongFilters = searchParams.get("search") || searchParams.get("category");
 
   return (
     <div className="flex flex-col items-center justify-center">
       <SearchBar
-        redirect="/profile/my-products"
+        redirectTo="/profile/my-products"
         searchParams={searchParams}
         placeholder="Search your products..."
       />
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {userProductsEl}
       </div>
+      {noProducts && !wrongFilters && <NoProductsComponent noProducts />}
+      {noProducts && wrongFilters && <NoProductsComponent wrongFilters />}
     </div>
   );
 }
