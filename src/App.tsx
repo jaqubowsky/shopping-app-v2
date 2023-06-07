@@ -23,11 +23,22 @@ import "react-toastify/dist/ReactToastify.css";
 import Notification from "./components/PopUp/Notification";
 import { UserContext } from "./context/UserContext";
 import Products from "./pages/Products/index.tsx";
+import { CartContext } from "./context/CartContext.tsx";
+import { CartItemsResponse } from "./types/cart";
+import { getCartItems } from "./api/cartApi.ts";
 
 function App() {
   const { data: userData, refetch }: UseQueryResult<UserResponse> = useQuery({
     queryKey: ["userData"],
     queryFn: checkLoginStatus,
+  });
+
+  const {
+    data: cartData,
+    refetch: refetchCart,
+  }: UseQueryResult<CartItemsResponse> = useQuery({
+    queryKey: ["cartItems"],
+    queryFn: getCartItems,
   });
 
   let isLoggedIn;
@@ -100,7 +111,9 @@ function App() {
   return (
     <ThemeProvider>
       <UserContext.Provider value={{ userData, refetch, isLoggedIn }}>
-        <RouterProvider router={router} />
+        <CartContext.Provider value={{ cartData, refetchCart }}>
+          <RouterProvider router={router} />
+        </CartContext.Provider>
       </UserContext.Provider>
       <Notification />
     </ThemeProvider>
