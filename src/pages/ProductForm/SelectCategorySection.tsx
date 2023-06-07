@@ -4,12 +4,10 @@ import { validationInfo } from "./validationInfo";
 
 type SelectCategorySectionProps<T extends FieldValues> = {
   control: Control<T>;
-  value?: string;
 };
 
 function SelectCategorySection<T extends FieldValues>({
   control,
-  value,
 }: SelectCategorySectionProps<T>) {
   return (
     <Controller
@@ -22,7 +20,7 @@ function SelectCategorySection<T extends FieldValues>({
           color="amber"
           aria-label="Select category"
           className="rounded-none"
-          value={value || field.value}
+          value={field.value}
           onChange={field.onChange}
         >
           <Option value="Other">Other</Option>
