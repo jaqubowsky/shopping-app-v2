@@ -34,6 +34,7 @@ export default function CartModal({ toggleCart, showCart }: CartModalProps) {
   });
 
   const handleRemove = (cartItemId: string) => {
+    notify({ type: "info", message: "Removing product from cart..." });
     removeMutation.mutate(cartItemId);
   };
 
