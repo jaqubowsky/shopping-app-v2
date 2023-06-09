@@ -7,6 +7,9 @@ import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
 import { notify } from "../../components/PopUp/Notification";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import Spinner from "../../components/Spinner";
+import { QueryObserverResult, useMutation } from "@tanstack/react-query";
+import { UserResponse } from "../../types/user";
 
 type Inputs = {
   e?: Event;
@@ -21,7 +24,11 @@ type Inputs = {
   cpassword: string;
 };
 
-export default function Register() {
+type RegisterProps = {
+  refetch: () => Promise<QueryObserverResult<UserResponse, unknown>>;
+}
+
+export default function Register({refetch}: RegisterProps) {
   const {
     register,
     handleSubmit,
@@ -34,22 +41,30 @@ export default function Register() {
     e
   ) => {
     e?.preventDefault();
-    try {
-      const registerValues = {
-        email,
-        password,
-        username,
-        name,
-        surname,
-        location,
-        phoneNumber,
-      };
-      await registerWithEmailAndPassword(registerValues);
-      notify({ message: "Registered successfully!", type: "success" });
-    } catch (err) {
-      notify({ message: getErrorMessage(err), type: "error" });
-    }
+    const registerValues = {
+      email,
+      password,
+      username,
+      name,
+      surname,
+      location,
+      phoneNumber,
+    };
+
+    await registerMutation.mutateAsync(registerValues);
   };
+
+  const registerMutation = useMutation(registerWithEmailAndPassword, {
+    onSuccess: () => {
+      notify({ message: "Registered successfully!", type: "success" });
+      void refetch()
+    },
+    onError: (err) => {
+      notify({ message: getErrorMessage(err), type: "error" });
+    },
+  });
+
+  if (registerMutation.isLoading) return <Spinner />;
 
   return (
     <Card color="transparent" shadow={false}>
@@ -226,7 +241,10 @@ export default function Register() {
         <Button className="mt-6" type="submit" color="amber" fullWidth>
           Register
         </Button>
-        <Typography color="gray" className="flex items-center justify-center gap-2 mt-4 font-normal">
+        <Typography
+          color="gray"
+          className="mt-4 flex items-center justify-center gap-2 font-normal"
+        >
           Already have an account?{" "}
           <Link
             to="/login"
