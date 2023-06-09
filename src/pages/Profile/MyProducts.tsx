@@ -65,11 +65,11 @@ export default function MyProducts() {
   const wrongFilters = searchParams.get("search") || searchParams.get("category");
 
   return (
-    <div className="flex flex-col items-center justify-center">
+    <div className="flex flex-col items-center justify-center mt-2">
       <SearchBar
         redirectTo="/profile/my-products"
         searchParams={searchParams}
-        placeholder="Search your products..."
+        placeholder="Search..."
       />
       <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         {userProductsEl}
