@@ -5,6 +5,8 @@ import { addToCart } from "../api/cartApi";
 import { getErrorMessage } from "../utils/getErrorMessage";
 import useCartContext from "../context/CartContext";
 import { useMutation } from "@tanstack/react-query";
+import { useState } from "react";
+import YouSureModal from "./YouSureModal";
 
 type ProductItemProps = {
   product: Product;
@@ -19,6 +21,8 @@ function ProductItem({
   handleDeleteProduct,
   isOwner,
 }: ProductItemProps) {
+  const [showModal, setShowModal] = useState(false);
+
   const createdAt = new Date(product.createdAt).toLocaleDateString();
   let shortenedDescription = "";
 
@@ -41,7 +45,16 @@ function ProductItem({
   });
 
   const handleAddToCart = (cartItemId: string) => {
+    notify({ type: "info", message: "Adding product to cart..." });
     addMutation.mutate(cartItemId);
+  };
+
+  const toggleModal = () => {
+    setShowModal((prev) => !prev);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -86,7 +99,7 @@ function ProductItem({
             {handleDeleteProduct && (
               <button
                 className="main-button my-2 w-full"
-                onClick={() => handleDeleteProduct(product.id)}
+                onClick={toggleModal}
               >
                 Delete
               </button>
@@ -94,6 +107,12 @@ function ProductItem({
           </div>
         )}
       </div>
+      <YouSureModal
+        showModal={showModal}
+        toggleModal={toggleModal}
+        closeModal={closeModal}
+        handleChange={() => handleDeleteProduct && handleDeleteProduct(product.id)}
+      />
     </div>
   );
 }
