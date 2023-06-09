@@ -27,8 +27,7 @@ const AccountDate = ({ userData }: AccountAgeProps) => {
   }, [userData?.user.createdAt]);
 
   return (
-    <div className="flex flex-col items-start">
-      <h2 className="mb-1 text-3xl">You have been with us:</h2>
+    <div className="flex flex-col items-center">
       <h3 className="text-xl text-yellow-800 drop-shadow-2xl">
         {accountAge.years} {accountAge.years === 1 ? "year" : "years"},{" "}
         {accountAge.months} {accountAge.months === 1 ? "month" : "months"} and{" "}
