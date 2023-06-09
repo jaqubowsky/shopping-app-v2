@@ -16,6 +16,7 @@ type NoProductsComponentProps = {
 );
 
 export default function NoProductsComponent({noProducts, wrongFilters}: NoProductsComponentProps) {
+  //eslint-disable-next-line
   const [_, setSearchParams] = useSearchParams();
 
   const clearFilters = () => {
@@ -24,7 +25,7 @@ export default function NoProductsComponent({noProducts, wrongFilters}: NoProduc
 
   if (noProducts) {
 return (
-  <div className="flex flex-col items-center justify-center">
+  <div className="flex flex-col items-center justify-center text-center">
     <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
     <Link to="/add-product" className="main-button w-8/12">
       Click here to add one!
@@ -35,7 +36,7 @@ return (
 
   if (wrongFilters) {
     return (
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center text-center">
         <h2 className="mb-8 text-4xl font-bold">
           No products found with these filters!
         </h2>
