@@ -22,20 +22,20 @@ export default function Home() {
 
   return (
     <>
-      <SearchBar searchParams={searchParams} redirectTo="/products" />
-      <div className="flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center mt-2">
+        <SearchBar searchParams={searchParams} redirectTo="/products" />
         <h2 className="text-3xl">
           Main{" "}
           <span className="text-yellow-800 drop-shadow-lg">categories</span>
         </h2>
       </div>
       <div>
-        <div className="hover: my-6 grid grid-cols-1 md:grid-cols-4 justify-center gap-6">
+        <div className="hover: my-6 grid grid-cols-1 justify-center gap-6 md:grid-cols-4">
           {categories.map((category) => (
             <button
               onClick={() => navigate(`/products/?category=${category}`)}
               key={category}
-              className="p-4 flex cursor-pointer flex-col items-center justify-center transition-all hover:border-b hover:border-b-yellow-800"
+              className="flex cursor-pointer flex-col items-center justify-center p-4 transition-all hover:border-b hover:border-b-yellow-800"
             >
               <IconComponent category={category} />
               <p className="text-gray-800">{category}</p>
