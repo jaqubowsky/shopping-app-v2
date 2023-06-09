@@ -28,7 +28,10 @@ import { CartItemsResponse } from "./types/cart";
 import { getCartItems } from "./api/cartApi.ts";
 
 function App() {
-  const { data: userData, refetch }: UseQueryResult<UserResponse> = useQuery({
+  const {
+    data: userData,
+    refetch,
+  }: UseQueryResult<UserResponse> = useQuery({
     queryKey: ["userData"],
     queryFn: checkLoginStatus,
   });
@@ -66,7 +69,7 @@ function App() {
         path="register"
         element={
           <ProtectedRoute isUserLoggedIn={isLoggedIn} redirectPath="/">
-            <Register />
+            <Register refetch={refetch} />
           </ProtectedRoute>
         }
       />
@@ -91,7 +94,7 @@ function App() {
         path="profile"
         element={
           <ProtectedRoute isUserLoggedIn={!isLoggedIn} redirectPath="/login">
-            <Profile userData={userData} />
+            <Profile userData={userData} refetch={refetch} />
           </ProtectedRoute>
         }
       />
