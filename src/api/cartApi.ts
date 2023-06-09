@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { Product } from "../types/product";
-const API_URL = "http://localhost:3001/api/";
+
+const API_URL = "https://shopping-app-v2-api.onrender.com/";
 
 const api = axios.create({
   baseURL: API_URL,

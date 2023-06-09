@@ -1,8 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { LoginValues, RegisterValues, UserResponse } from "../types/user";
 
-const API_URL = "http://localhost:3001/api/";
-const ALL_URL = "http://localhost:3001";
+const API_URL = "https://shopping-app-v2-api.onrender.com/api/";
+const ALL_URL = "https://shopping-app-v2-api.onrender.com";
 
 const api = axios.create({
   baseURL: API_URL,
