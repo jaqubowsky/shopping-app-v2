@@ -9,6 +9,7 @@ import useUserContext from "../../context/UserContext";
 import { loginWithEmailAndPassword } from "../../api/userApi";
 import { useMutation } from "@tanstack/react-query";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import Spinner from "../../components/Spinner";
 
 type Inputs = {
   e?: Event;
@@ -56,6 +57,8 @@ export default function Login() {
       notify({ message: getErrorMessage(err), type: "error" });
     }
   };
+
+  if (loginMutation.isLoading) return <Spinner />;
 
   return (
     <div className="mx-auto my-0 w-72">
@@ -113,7 +116,10 @@ export default function Login() {
           <Button className="mt-6" type="submit" color="amber" fullWidth>
             Login
           </Button>
-          <Typography color="gray" className="mt-4 flex gap-2 justify-center items-center font-normal">
+          <Typography
+            color="gray"
+            className="mt-4 flex items-center justify-center gap-2 font-normal"
+          >
             Do not have an account?{" "}
             <Link
               to="/register"
