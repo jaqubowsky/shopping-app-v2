@@ -31,6 +31,7 @@ export type LoginData = {
 export type UserResponse = {
   message: string;
   user: {
+    id?: string;
     username?: string;
     email?: string;
     imageUrl?: string;
