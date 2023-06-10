@@ -60,9 +60,7 @@ export default function SearchBar({
             label={placeholder}
           />
         </div>
-        <SelectCategorySection<SearchBarForm>
-          control={control}
-        />
+        <SelectCategorySection<SearchBarForm> control={control} />
         <button
           type="submit"
           className="rounded-sm bg-yellow-800 px-8 py-2 font-bold text-white transition-all hover:bg-yellow-700"
