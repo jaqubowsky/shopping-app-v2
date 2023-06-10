@@ -104,7 +104,7 @@
 
 <ul>
  <li>Wrong route page</li>
- <li>Uploading multiple images to user</li>
+ <li>Uploading multiple images to product</li>
  <li>Editing user profile</li>
 </ul>
 
