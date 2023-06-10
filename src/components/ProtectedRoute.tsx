@@ -2,17 +2,16 @@ import { Navigate } from "react-router-dom";
 import { PropsWithChildren } from "react";
 
 type ProtectedRouteProps = {
-  isUserLoggedIn: boolean;
+  condition: boolean;
   redirectPath: string;
 };
 
 const ProtectedRoute = ({
-  isUserLoggedIn,
+  condition,
   redirectPath,
   children,
 }: PropsWithChildren<ProtectedRouteProps>): JSX.Element => {
-
-  if (!isUserLoggedIn === false) {
+  if (condition === false) {
     return <Navigate to={redirectPath} replace />;
   }
   return <>{children}</>;
