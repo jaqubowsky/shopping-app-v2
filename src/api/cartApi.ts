@@ -13,7 +13,7 @@ export const addToCart = async (productId: string) => {
   try {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
-    return await api.post("/cart", { productId: productId }, config);
+    return await api.post(`/cart/${productId}`, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
