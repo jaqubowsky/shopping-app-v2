@@ -12,7 +12,7 @@
    Front-end side of Fake E-commerce Store App
     <br />
     <br />
-    <a href="https://github.com/jaqubowsky/shopping-app-v2">View Demo</a>
+    <a href="https://boisterous-pastelito-fa5201.netlify.app">View Demo</a>
     ·
     <a href="https://github.com/jaqubowsky/shopping-app-v2/issues">Report Bug</a>
     ·
@@ -48,7 +48,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Fake Store Project Screenshot][product-screenshot]](https://github.com/jaqubowsky/shopping-app-v2)
+[![Fake Store Project Screenshot][product-screenshot]](https://boisterous-pastelito-fa5201.netlify.app)
   
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
