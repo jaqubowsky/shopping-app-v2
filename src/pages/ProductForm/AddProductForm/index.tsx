@@ -15,6 +15,7 @@ export function AddProduct() {
 
   const defaultValues = {
     name: "",
+    username: userData?.user?.username,
     description: "",
     price: 0,
     image: undefined,

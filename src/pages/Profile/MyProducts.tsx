@@ -54,6 +54,7 @@ export default function MyProducts() {
   const userProductsEl = filteredProducts?.map((product) => {
     return (
       <ProductItem
+        isOwner
         handleDeleteProduct={handleDeleteProduct}
         product={product}
         key={product.id}
