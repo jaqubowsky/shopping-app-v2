@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Product } from "../types/product";
 import { notify } from "./PopUp/Notification";
 import { addToCart } from "../api/cartApi";
@@ -7,6 +7,7 @@ import useCartContext from "../context/CartContext";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import YouSureModal from "./YouSureModal";
+import { useUserContext } from "../context/UserContext";
 
 type ProductItemProps = {
   product: Product;
@@ -22,6 +23,9 @@ function ProductItem({
   isOwner,
 }: ProductItemProps) {
   const [showModal, setShowModal] = useState(false);
+
+  const { userData } = useUserContext();
+  const navigate = useNavigate();
 
   const createdAt = new Date(product.createdAt).toLocaleDateString();
   let shortenedDescription = "";
@@ -80,10 +84,14 @@ function ProductItem({
         <h2 className="mt-4 text-2xl font-bold">{product.name}</h2>
         <p>{shortenedDescription}</p>
         <p className="text-xl italic">${product.price}</p>
-        {main ? (
+        {!isOwner ? (
           <button
             className="main-button my-2 w-full"
-            onClick={() => handleAddToCart(product.id)}
+            onClick={
+              userData?.isLoggedIn
+                ? () => handleAddToCart(product.id)
+                : () => navigate("/login")
+            }
           >
             Add to cart
           </button>
@@ -97,10 +105,7 @@ function ProductItem({
               Edit
             </Link>
             {handleDeleteProduct && (
-              <button
-                className="main-button my-2 w-full"
-                onClick={toggleModal}
-              >
+              <button className="main-button my-2 w-full" onClick={toggleModal}>
                 Delete
               </button>
             )}
@@ -111,7 +116,9 @@ function ProductItem({
         showModal={showModal}
         toggleModal={toggleModal}
         closeModal={closeModal}
-        handleChange={() => handleDeleteProduct && handleDeleteProduct(product.id)}
+        handleChange={() =>
+          handleDeleteProduct && handleDeleteProduct(product.id)
+        }
       />
     </div>
   );
