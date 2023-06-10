@@ -8,8 +8,8 @@ import { validationInfo } from "./validationInfo";
 import { notify } from "../../components/PopUp/Notification";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import Spinner from "../../components/Spinner";
-import { QueryObserverResult, useMutation } from "@tanstack/react-query";
-import { UserResponse } from "../../types/user";
+import { useMutation } from "@tanstack/react-query";
+import { useUserContext } from "../../context/UserContext";
 
 type Inputs = {
   e?: Event;
@@ -24,11 +24,9 @@ type Inputs = {
   cpassword: string;
 };
 
-type RegisterProps = {
-  refetch: () => Promise<QueryObserverResult<UserResponse, unknown>>;
-}
+export default function Register() {
+  const { refetch } = useUserContext();
 
-export default function Register({refetch}: RegisterProps) {
   const {
     register,
     handleSubmit,
@@ -57,7 +55,7 @@ export default function Register({refetch}: RegisterProps) {
   const registerMutation = useMutation(registerWithEmailAndPassword, {
     onSuccess: () => {
       notify({ message: "Registered successfully!", type: "success" });
-      void refetch()
+      void refetch();
     },
     onError: (err) => {
       notify({ message: getErrorMessage(err), type: "error" });
