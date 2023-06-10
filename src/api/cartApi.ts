@@ -13,7 +13,7 @@ export const addToCart = async (productId: string) => {
   try {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
-    return await api.post(`/cart/${productId}`, config);
+    return await api.post(`/cart/${productId}`, {}, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -45,10 +45,7 @@ export const getCartItems = async (): Promise<Product[]> => {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
 
-    const response: AxiosResponse<Product[]> = await api.get(
-      `/cart`,
-      config
-    );
+    const response: AxiosResponse<Product[]> = await api.get(`/cart`, config);
 
     return response.data;
   } catch (err: unknown) {

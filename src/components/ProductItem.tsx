@@ -48,9 +48,9 @@ function ProductItem({
     },
   });
 
-  const handleAddToCart = (cartItemId: string) => {
+  const handleAddToCart = (id: string) => {
     notify({ type: "info", message: "Adding product to cart..." });
-    addMutation.mutate(cartItemId);
+    addMutation.mutate(id);
   };
 
   const toggleModal = () => {
