@@ -91,7 +91,12 @@ export const getProducts = async (): Promise<Product[]> => {
 
 export const getUserProducts = async (): Promise<Product[]> => {
   try {
-    const response: AxiosResponse<Product[]> = await api.get("/products");
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+    const response: AxiosResponse<Product[]> = await api.get(
+      "/products",
+      config
+    );
 
     const products = response.data;
 
