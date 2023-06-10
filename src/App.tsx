@@ -16,25 +16,17 @@ import MyProducts from "./pages/Profile/MyProducts";
 import { AddProduct } from "./pages/ProductForm/AddProductForm/index";
 import { EditProduct } from "./pages/ProductForm/EditProductForm/index";
 import ProductPage from "./pages/Product/ProductPage";
-import { UserResponse } from "./types/user";
 import { UseQueryResult, useQuery } from "@tanstack/react-query";
-import { checkLoginStatus } from "./api/userApi";
 import "react-toastify/dist/ReactToastify.css";
 import Notification from "./components/PopUp/Notification";
-import { UserContext } from "./context/UserContext";
+import { useUserContext } from "./context/UserContext";
 import Products from "./pages/Products/index.tsx";
 import { CartContext } from "./context/CartContext.tsx";
 import { CartItemsResponse } from "./types/cart";
 import { getCartItems } from "./api/cartApi.ts";
 
 function App() {
-  const {
-    data: userData,
-    refetch,
-  }: UseQueryResult<UserResponse> = useQuery({
-    queryKey: ["userData"],
-    queryFn: checkLoginStatus,
-  });
+  const { userData } = useUserContext();
 
   const {
     data: cartData,
@@ -42,15 +34,8 @@ function App() {
   }: UseQueryResult<CartItemsResponse> = useQuery({
     queryKey: ["cartItems"],
     queryFn: getCartItems,
+    enabled: userData?.isLoggedIn || false, // Only enable the query when the user is logged in
   });
-
-  let isLoggedIn;
-
-  if (userData?.user === null) {
-    isLoggedIn = false;
-  } else {
-    isLoggedIn = true;
-  }
 
   const routes = createRoutesFromChildren(
     <Route path="/" element={<Layout userData={userData} />}>
@@ -60,7 +45,10 @@ function App() {
       <Route
         path="login"
         element={
-          <ProtectedRoute isUserLoggedIn={isLoggedIn} redirectPath="/">
+          <ProtectedRoute
+            condition={!userData?.isLoggedIn || false}
+            redirectPath="/"
+          >
             <Login />
           </ProtectedRoute>
         }
@@ -68,15 +56,21 @@ function App() {
       <Route
         path="register"
         element={
-          <ProtectedRoute isUserLoggedIn={isLoggedIn} redirectPath="/">
-            <Register refetch={refetch} />
+          <ProtectedRoute
+            condition={!userData?.isLoggedIn || false}
+            redirectPath="/"
+          >
+            <Register />
           </ProtectedRoute>
         }
       />
       <Route
         path="add-product"
         element={
-          <ProtectedRoute isUserLoggedIn={!isLoggedIn} redirectPath="/login">
+          <ProtectedRoute
+            condition={userData?.isLoggedIn || false}
+            redirectPath="/login"
+          >
             <AddProduct />
           </ProtectedRoute>
         }
@@ -84,7 +78,10 @@ function App() {
       <Route
         path="edit-product/:id"
         element={
-          <ProtectedRoute isUserLoggedIn={!isLoggedIn} redirectPath="/login">
+          <ProtectedRoute
+            condition={userData?.isLoggedIn || false}
+            redirectPath="/login"
+          >
             <EditProduct />
           </ProtectedRoute>
         }
@@ -93,15 +90,21 @@ function App() {
       <Route
         path="profile"
         element={
-          <ProtectedRoute isUserLoggedIn={!isLoggedIn} redirectPath="/login">
-            <Profile userData={userData} refetch={refetch} />
+          <ProtectedRoute
+            condition={userData?.isLoggedIn || false}
+            redirectPath="/login"
+          >
+            <Profile />
           </ProtectedRoute>
         }
       />
       <Route
         path="profile/my-products"
         element={
-          <ProtectedRoute isUserLoggedIn={!isLoggedIn} redirectPath="/login">
+          <ProtectedRoute
+            condition={userData?.isLoggedIn || false}
+            redirectPath="/login"
+          >
             <MyProducts />
           </ProtectedRoute>
         }
@@ -113,11 +116,9 @@ function App() {
 
   return (
     <ThemeProvider>
-      <UserContext.Provider value={{ userData, refetch, isLoggedIn }}>
-        <CartContext.Provider value={{ cartData, refetchCart }}>
-          <RouterProvider router={router} />
-        </CartContext.Provider>
-      </UserContext.Provider>
+      <CartContext.Provider value={{ cartData, refetchCart }}>
+        <RouterProvider router={router} />
+      </CartContext.Provider>
       <Notification />
     </ThemeProvider>
   );
