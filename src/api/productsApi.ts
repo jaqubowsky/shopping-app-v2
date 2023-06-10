@@ -95,6 +95,7 @@ export const getUserProducts = async (): Promise<Product[]> => {
   try {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
+    
     const response: AxiosResponse<Product[]> = await api.get(
       "/users/products",
       config
