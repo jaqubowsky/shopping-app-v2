@@ -7,7 +7,7 @@ import Spinner from "../../../components/Spinner";
 import { useMutation } from "@tanstack/react-query";
 import { getErrorMessage } from "../../../utils/getErrorMessage";
 import { FormInputs } from "../../../types/form";
-import useUserContext from "../../../context/UserContext";
+import { useUserContext } from "../../../context/UserContext";
 
 export function AddProduct() {
   const [previewImage, setPreviewImage] = useState("");
