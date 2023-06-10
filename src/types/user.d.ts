@@ -30,6 +30,7 @@ export type LoginData = {
 
 export type UserResponse = {
   message: string;
+  isLoggedIn: boolean;
   user: {
     id?: string;
     username?: string;
@@ -49,6 +50,7 @@ export type OtherUserResponse = {
     phoneNumber: number;
     username: string;
   };
+  isLoggedIn: boolean;
 };
 
 export type UserHookResponse = {

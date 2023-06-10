@@ -1,0 +1,3 @@
+type RegisterResponse = {
+  token: string;
+};

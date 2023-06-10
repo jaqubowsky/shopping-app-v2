@@ -6,7 +6,7 @@ import Spinner from "../../components/Spinner";
 import ProductItem from "../../components/ProductItem";
 import { useSearchParams } from "react-router-dom";
 import NoProductsComponent from "../../components/NoProductsComponent";
-import useUserContext from "../../context/UserContext";
+import { useUserContext } from "../../context/UserContext";
 
 export default function Products() {
   const [searchParams] = useSearchParams();
@@ -31,13 +31,23 @@ export default function Products() {
     );
   }
 
-
   if (isLoading) return <Spinner />;
 
   const allProductsEl = filteredProducts?.map((product) => {
-    const isLoggedUserOwner = product.email === userData?.user.email;
+    let isLoggedUserOwner = false;
 
-    return <ProductItem main product={product} key={product.id} isOwner={isLoggedUserOwner} />;
+    if (userData?.user) {
+      isLoggedUserOwner = product.email === userData?.user.email;
+    }
+    
+    return (
+      <ProductItem
+        main
+        product={product}
+        key={product.id}
+        isOwner={isLoggedUserOwner}
+      />
+    );
   });
 
   if (!filteredProducts || filteredProducts.length === 0) {

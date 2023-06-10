@@ -5,11 +5,11 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { ErrorMessage } from "../../components/ErrorMessage";
 import { validationInfo } from "./validationInfo";
 import { notify } from "../../components/PopUp/Notification";
-import useUserContext from "../../context/UserContext";
 import { loginWithEmailAndPassword } from "../../api/userApi";
 import { useMutation } from "@tanstack/react-query";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import Spinner from "../../components/Spinner";
+import { useUserContext } from "../../context/UserContext";
 
 type Inputs = {
   e?: Event;
@@ -116,11 +116,11 @@ export default function Login() {
           <Button className="mt-6" type="submit" color="amber" fullWidth>
             Login
           </Button>
-          <Typography
+          <div
             color="gray"
             className="mt-4 flex items-center justify-center gap-2 font-normal"
           >
-            Do not have an account?{" "}
+            <Typography color="gray">Do not have an account?</Typography>
             <Link
               to="/register"
               replace
@@ -128,7 +128,7 @@ export default function Login() {
             >
               <Typography color="amber">Sign Up </Typography>
             </Link>
-          </Typography>
+          </div>
         </div>
       </form>
     </div>

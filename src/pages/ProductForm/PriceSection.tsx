@@ -5,8 +5,8 @@ import { FieldErrors, UseFormRegister } from "react-hook-form";
 import { validationInfo } from "./validationInfo";
 
 type PriceSectionProps = {
-  register: UseFormRegister<FormInputs >;
-  errors: FieldErrors<FormInputs >;
+  register: UseFormRegister<FormInputs>;
+  errors: FieldErrors<FormInputs>;
 };
 
 function PriceSection({ errors, register }: PriceSectionProps) {

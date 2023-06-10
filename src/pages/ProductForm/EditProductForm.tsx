@@ -37,29 +37,16 @@ export default function EditProductForm({
       className="mt-8 flex w-full flex-col gap-2"
       onSubmit={onPromise(handleSubmit(onSubmit))}
     >
-      <NameSection
-        register={register}
-        errors={errors}
-        control={control}
-      />
+      <NameSection register={register} errors={errors} control={control} />
       <ImageSection
         previewImage={previewImage}
         handleImageChange={handleImageChange}
         register={register}
         errors={errors}
       />
-      <DescriptionSection
-        register={register}
-        errors={errors}
-      />
-      <PriceSection
-        register={register}
-        errors={errors}
-      />
-      <ContactSection
-        register={register}
-        errors={errors}
-      />
+      <DescriptionSection register={register} errors={errors} />
+      <PriceSection register={register} errors={errors} />
+      <ContactSection register={register} errors={errors} />
       <div className="text-center">
         <button className="main-button w-9/12">Edit product!</button>
       </div>

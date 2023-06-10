@@ -62,10 +62,11 @@ export default function MyProducts() {
   });
 
   const noProducts = !filteredProducts || filteredProducts.length === 0;
-  const wrongFilters = searchParams.get("search") || searchParams.get("category");
+  const wrongFilters =
+    searchParams.get("search") || searchParams.get("category");
 
   return (
-    <div className="flex flex-col items-center justify-center mt-2">
+    <div className="mt-2 flex flex-col items-center justify-center">
       <SearchBar
         redirectTo="/profile/my-products"
         searchParams={searchParams}

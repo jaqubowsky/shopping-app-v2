@@ -1,20 +1,17 @@
 import { Avatar } from "@material-tailwind/react";
 import AccountDate from "./AccountDate";
-import { UserResponse } from "../../types/user";
-import { QueryObserverResult, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import YouSureModal from "../../components/YouSureModal";
 import { useState } from "react";
 import { deleteAccount, signOut } from "../../api/userApi";
 import { notify } from "../../components/PopUp/Notification";
 import { getErrorMessage } from "../../utils/getErrorMessage";
 import Spinner from "../../components/Spinner";
+import { useUserContext } from "../../context/UserContext";
 
-type ProfileProps = {
-  userData: UserResponse | undefined;
-  refetch: () => Promise<QueryObserverResult<UserResponse, unknown>>;
-};
 
-export default function Profile({ userData, refetch }: ProfileProps) {
+export default function Profile() {
+  const { userData, refetch } = useUserContext();
   const [showModal, setShowModal] = useState(false);
 
   const toggleModal = () => {
@@ -45,8 +42,8 @@ export default function Profile({ userData, refetch }: ProfileProps) {
   if (deleteMutation.isLoading) return <Spinner />;
 
   return (
-    <div className="mt-4 flex flex-col md:flex-row items-center justify-center md:gap-10">
-      <section className="flex justify-around gap-6 md:pr-8 border-b border-gray-500 border-b-gray-300 pb-2 md:border-b-0 md:border-r md:border-r-gray-300">
+    <div className="mt-4 flex flex-col items-center justify-center md:flex-row md:gap-10">
+      <section className="flex justify-around gap-6 border-b border-gray-500 border-b-gray-300 pb-2 md:border-b-0 md:border-r md:border-r-gray-300 md:pr-8">
         <div className="text-center">
           <Avatar
             className="cursor-pointer rounded-full object-cover"
