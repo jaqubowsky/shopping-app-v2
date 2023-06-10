@@ -38,7 +38,7 @@ function App() {
   });
 
   const routes = createRoutesFromChildren(
-    <Route path="/" element={<Layout userData={userData} />}>
+    <Route path="/" element={<Layout />}>
       <Route index element={<Home />} />
       <Route path="contact" element={<Contact />} />
       <Route path="products" element={<Products />} />

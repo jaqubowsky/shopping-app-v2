@@ -6,13 +6,8 @@ import UserIcon from "./UserIcon";
 import UserOptionsModal from "../../pages/Auth/UserOptionsModal";
 import CartIcon from "./CartIcon";
 import AddProductIcon from "./AddProductIcon";
-import { UserResponse } from "../../types/user";
 
-type LayoutProps = {
-  userData: UserResponse | undefined;
-}
-
-export default function Layout({userData}: LayoutProps) {
+export default function Layout() {
   const [showCart, setShowCart] = useState(false);
   const [showLoginDropdown, setShowLoginDropdown] = useState(false);
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -52,17 +47,15 @@ export default function Layout({userData}: LayoutProps) {
           <CartIcon toggleCart={toggleCart} />
           <UserIcon
             toggleLoginDropdown={toggleLoginDropdown}
-            userData={userData}
           />
           <AddProductIcon />
         </NavBar>
       </header>
 
-      <main className="my-48 md:my-32 flex flex-col items-center justify-center">
+      <main className="my-48 flex flex-col items-center justify-center md:my-32">
         <Outlet />
       </main>
       <UserOptionsModal
-        userData={userData}
         toggleLoginDropdown={toggleLoginDropdown}
         showLoginDropdown={showLoginDropdown}
       />

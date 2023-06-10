@@ -1,12 +1,13 @@
 import { BiUser } from "react-icons/bi";
-import { UserResponse } from "../../types/user";
+import { useUserContext } from "../../context/UserContext";
 
 type UserIconProps = {
   toggleLoginDropdown: () => void;
-  userData: UserResponse | undefined;
 };
 
-function UserIcon({ toggleLoginDropdown, userData }: UserIconProps) {
+function UserIcon({ toggleLoginDropdown }: UserIconProps) {
+  const { userData } = useUserContext();
+
   const handleEnterPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
       toggleLoginDropdown();
