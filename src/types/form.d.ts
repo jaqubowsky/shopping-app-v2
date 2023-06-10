@@ -7,6 +7,7 @@ export type FormInputs = {
   email?: string;
   phoneNumber: number;
   location: string;
+  username: string;
 };
 
 export type SearchBarForm = {

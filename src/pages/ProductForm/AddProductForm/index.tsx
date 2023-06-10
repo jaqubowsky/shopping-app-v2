@@ -15,7 +15,7 @@ export function AddProduct() {
 
   const defaultValues = {
     name: "",
-    username: userData?.user?.username,
+    username: userData?.user?.username || "anonymous",
     description: "",
     price: 0,
     image: undefined,
@@ -87,6 +87,7 @@ export function AddProduct() {
     email,
     location,
     phoneNumber,
+    username,
   }: FormInputs) => {
     const formData = new FormData();
     formData.append("name", name);
@@ -107,6 +108,7 @@ export function AddProduct() {
     }
     formData.append("location", location);
     formData.append("phoneNumber", phoneNumber.toString());
+    formData.append("username", username);
 
     return formData;
   };
@@ -124,6 +126,7 @@ export function AddProduct() {
     try {
       const formData = compileFormData({
         name,
+        username: userData?.user?.username || "anonymous",
         description,
         category,
         price,
