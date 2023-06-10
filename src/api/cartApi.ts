@@ -1,7 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 import { Product } from "../types/product";
+import { getConfig } from "./config";
 
-const API_URL = "https://shopping-app-v2-api.onrender.com/";
+const API_URL = "https://shopping-app-v2-api.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -10,7 +11,9 @@ const api = axios.create({
 
 export const addToCart = async (productId: string) => {
   try {
-    return await api.post("/cart", { productId: productId });
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+    return await api.post("/cart", { productId: productId }, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -23,7 +26,10 @@ export const addToCart = async (productId: string) => {
 
 export const removeFromCart = async (productId: string) => {
   try {
-    return await api.delete(`/cart/${productId}`);
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+
+    return await api.delete(`/cart/${productId}`, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -36,12 +42,15 @@ export const removeFromCart = async (productId: string) => {
 
 export const getCartItems = async (): Promise<Product[]> => {
   try {
-    const response: AxiosResponse<Product[]> = await api.get(`/cart`);
-    
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+
+    const response: AxiosResponse<Product[]> = await api.get(`/cart`, config);
+
     return response.data;
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
-      console.log(err)
+      console.log(err);
       // eslint-disable-next-line
       throw new Error(err.response?.data);
     } else {

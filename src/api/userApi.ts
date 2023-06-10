@@ -1,8 +1,9 @@
 import axios, { AxiosResponse } from "axios";
 import { LoginValues, RegisterValues, UserResponse } from "../types/user";
+import { getConfig } from "./config";
 
 const API_URL = "https://shopping-app-v2-api.onrender.com/api/";
-const ALL_URL = "https://shopping-app-v2-api.onrender.com";
+const ALL_URL = "https://shopping-app-v2-api.onrender.com/";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -18,7 +19,13 @@ export const registerWithEmailAndPassword = async (
   registerValues: RegisterValues
 ) => {
   try {
-    await all.post("/register", registerValues);
+    const response: AxiosResponse<RegisterResponse> = await all.post(
+      "/register",
+      registerValues
+    );
+
+    const token = response.data.token;
+    sessionStorage.setItem("token", token);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -31,12 +38,20 @@ export const registerWithEmailAndPassword = async (
 
 export const loginWithEmailAndPassword = async (formValues: LoginValues) => {
   try {
-    await all.post("/login", formValues);
+    const response: AxiosResponse<RegisterResponse> = await all.post(
+      "/login",
+      formValues
+    );
+    const token = response.data.token;
+
+    sessionStorage.setItem("token", token);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
+      console.log(err);
       // eslint-disable-next-line
       throw new Error(err.response?.data.message);
     } else {
+      console.log(err);
       throw new Error("Unexpected error");
     }
   }
@@ -44,7 +59,15 @@ export const loginWithEmailAndPassword = async (formValues: LoginValues) => {
 
 export const checkLoginStatus = async (): Promise<UserResponse> => {
   try {
-    const response: AxiosResponse<UserResponse> = await all.get("/logged-in");
+    const token = sessionStorage.getItem("token");
+
+    const config = getConfig(token || "");
+
+    const response: AxiosResponse<UserResponse> = await all.get(
+      "/logged-in",
+      config
+    );
+
     const userData = response.data;
     return userData;
   } catch (err: unknown) {
@@ -60,7 +83,10 @@ export const checkLoginStatus = async (): Promise<UserResponse> => {
 
 export const deleteAccount = async (userId: string) => {
   try {
-    return await api.delete(`/user/${userId}`);
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+
+    return await api.delete(`/user/${userId}`, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -95,15 +121,13 @@ export const getUserById = async (
   }
 };
 
-export const signOut = async () => {
-  try {
-    await api.get("/logout");
-  } catch (err: unknown) {
-    if (axios.isAxiosError(err)) {
-      // eslint-disable-next-line
-      throw new Error(err.response?.data);
-    } else {
-      throw new Error("Unexpected error");
+export const signOut = () => {
+  return new Promise<void>((resolve, reject) => {
+    try {
+      sessionStorage.removeItem("token");
+      resolve(); // Resolve the promise if the operation is successful
+    } catch (err) {
+      reject(new Error("Unexpected error")); // Reject the promise with an error if an exception occurs
     }
-  }
+  });
 };

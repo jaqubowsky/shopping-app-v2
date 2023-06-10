@@ -1,5 +1,6 @@
 import axios, { AxiosResponse } from "axios";
 import { Product } from "../types/product";
+import { getConfig } from "./config";
 
 const API_URL = "https://shopping-app-v2-api.onrender.com/api/";
 const ALL_URL = "https://shopping-app-v2-api.onrender.com/";
@@ -18,11 +19,20 @@ export const addProduct = async (
   formData: FormData
 ): Promise<{ data: Product }> => {
   try {
-    return await api.post("/product", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+
+    return await api.post(
+      "/product",
+      formData,
+
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          ...config.headers,
+        },
+      }
+    );
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -43,9 +53,13 @@ export const editProduct = async ({
   productId,
 }: EditProductProps): Promise<{ data: Product }> => {
   try {
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+
     return await api.put(`/product/${productId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        ...config.headers,
       },
     });
   } catch (err: unknown) {
@@ -111,7 +125,10 @@ export const getUserProduct = async (id: string): Promise<Product[]> => {
 
 export const deleteProduct = async (id: string) => {
   try {
-    return await api.delete(`/product/${id}`);
+    const token = sessionStorage.getItem("token");
+    const config = getConfig(token || "");
+
+    return await api.delete(`/product/${id}`, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
