@@ -15,23 +15,26 @@ type NoProductsComponentProps = {
     }
 );
 
-export default function NoProductsComponent({noProducts, wrongFilters}: NoProductsComponentProps) {
+export default function NoProductsComponent({
+  noProducts,
+  wrongFilters,
+}: NoProductsComponentProps) {
   //eslint-disable-next-line
   const [_, setSearchParams] = useSearchParams();
 
   const clearFilters = () => {
     setSearchParams({ search: "", category: "" });
-  }
+  };
 
   if (noProducts) {
-return (
-  <div className="flex flex-col items-center justify-center text-center">
-    <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
-    <Link to="/add-product" className="main-button w-8/12">
-      Click here to add one!
-    </Link>
-  </div>
-);
+    return (
+      <div className="flex flex-col items-center justify-center text-center">
+        <h2 className="mb-8 text-4xl font-bold">You have no products yet!</h2>
+        <Link to="/add-product" className="main-button w-8/12">
+          Click here to add one!
+        </Link>
+      </div>
+    );
   }
 
   if (wrongFilters) {
