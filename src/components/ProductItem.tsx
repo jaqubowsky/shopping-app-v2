@@ -67,7 +67,7 @@ function ProductItem({
       key={product.id}
     >
       <div className="mb-8 flex h-80 w-64 cursor-pointer items-center self-center border-b border-b-gray-300">
-        <Link to={`/products/${product.id}`}>
+        <Link to={`/products/${product.id}`} className="h-full w-full object-cover">
           <img
             className="h-full w-full object-cover"
             src={product.imageUrl}
