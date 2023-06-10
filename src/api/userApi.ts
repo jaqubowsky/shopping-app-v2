@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { LoginValues, RegisterValues, UserResponse } from "../types/user";
 import { getConfig } from "./config";
 
-const API_URL = "https://shopping-app-v2-api.onrender.com/api/";
-const ALL_URL = "https://shopping-app-v2-api.onrender.com/";
+const API_URL = "https://shopping-app-v2-api.onrender.com/protected/api";
+const ALL_URL = "https://shopping-app-v2-api.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -20,7 +20,7 @@ export const registerWithEmailAndPassword = async (
 ) => {
   try {
     const response: AxiosResponse<RegisterResponse> = await all.post(
-      "/register",
+      "/users/register",
       registerValues
     );
 
@@ -39,7 +39,7 @@ export const registerWithEmailAndPassword = async (
 export const loginWithEmailAndPassword = async (formValues: LoginValues) => {
   try {
     const response: AxiosResponse<RegisterResponse> = await all.post(
-      "/login",
+      "/users/login",
       formValues
     );
     const token = response.data.token;
@@ -64,7 +64,7 @@ export const checkLoginStatus = async (): Promise<UserResponse> => {
     const config = getConfig(token || "");
 
     const response: AxiosResponse<UserResponse> = await all.get(
-      "/logged-in",
+      "/users/logged-in",
       config
     );
 
@@ -86,7 +86,7 @@ export const deleteAccount = async (userId: string) => {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
 
-    return await api.delete(`/user/${userId}`, config);
+    return await api.delete(`/users/${userId}`, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line
@@ -103,7 +103,7 @@ export const getUserById = async (
   try {
     if (id) {
       const response: AxiosResponse<UserResponse> = await all.get(
-        `/user/${id}`
+        `/users/${id}`
       );
       const userData = response.data;
 

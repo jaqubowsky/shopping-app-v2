@@ -2,8 +2,8 @@ import axios, { AxiosResponse } from "axios";
 import { Product } from "../types/product";
 import { getConfig } from "./config";
 
-const API_URL = "https://shopping-app-v2-api.onrender.com/api/";
-const ALL_URL = "https://shopping-app-v2-api.onrender.com/";
+const API_URL = "https://shopping-app-v2-api.onrender.com/protected/api";
+const ALL_URL = "https://shopping-app-v2-api.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -23,7 +23,7 @@ export const addProduct = async (
     const config = getConfig(token || "");
 
     return await api.post(
-      "/product",
+      "/products",
       formData,
 
       {
@@ -56,7 +56,7 @@ export const editProduct = async ({
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
 
-    return await api.put(`/product/${productId}`, formData, {
+    return await api.put(`/products/${productId}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         ...config.headers,
@@ -74,7 +74,9 @@ export const editProduct = async ({
 
 export const getProducts = async (): Promise<Product[]> => {
   try {
-    const response: AxiosResponse<Product[]> = await all.get("/allproducts");
+    const response: AxiosResponse<Product[]> = await all.get(
+      "/products/all"
+    );
 
     const products = response.data;
 
@@ -94,7 +96,7 @@ export const getUserProducts = async (): Promise<Product[]> => {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
     const response: AxiosResponse<Product[]> = await api.get(
-      "/products",
+      "/users/products",
       config
     );
 
@@ -113,7 +115,9 @@ export const getUserProducts = async (): Promise<Product[]> => {
 
 export const getUserProduct = async (id: string): Promise<Product[]> => {
   try {
-    const response: AxiosResponse<Product[]> = await all.get(`/product/${id}`);
+    const response: AxiosResponse<Product[]> = await all.get(
+      `/products/${id}`
+    );
 
     const product = response.data;
 
@@ -133,7 +137,7 @@ export const deleteProduct = async (id: string) => {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
 
-    return await api.delete(`/product/${id}`, config);
+    return await api.delete(`/products/${id}`, config);
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
       // eslint-disable-next-line

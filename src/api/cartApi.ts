@@ -2,7 +2,7 @@ import axios, { AxiosResponse } from "axios";
 import { Product } from "../types/product";
 import { getConfig } from "./config";
 
-const API_URL = "https://shopping-app-v2-api.onrender.com/api";
+const API_URL = "https://shopping-app-v2-api.onrender.com/protected/api";
 
 const api = axios.create({
   baseURL: API_URL,
@@ -45,7 +45,10 @@ export const getCartItems = async (): Promise<Product[]> => {
     const token = sessionStorage.getItem("token");
     const config = getConfig(token || "");
 
-    const response: AxiosResponse<Product[]> = await api.get(`/cart`, config);
+    const response: AxiosResponse<Product[]> = await api.get(
+      `/cart`,
+      config
+    );
 
     return response.data;
   } catch (err: unknown) {
