@@ -1,5 +1,7 @@
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import useCartContext from "../../context/CartContext";
+import { useUserContext } from "../../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 type CartIconProps = {
   toggleCart: () => void;
@@ -15,11 +17,13 @@ function CartIcon({ toggleCart }: CartIconProps) {
   };
 
   const { cartData } = useCartContext();
+  const { userData } = useUserContext();
+  const navigate = useNavigate();
 
   return (
     <div className="relative">
       <div
-        onClick={toggleCart}
+        onClick={userData?.isLoggedIn ? toggleCart : () => navigate("/login")}
         role="button"
         aria-label="cart icon"
         tabIndex={0}
