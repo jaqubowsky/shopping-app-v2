@@ -12,7 +12,6 @@ function ProductPage() {
   const params = useParams();
   const productId = params.id || "";
 
-
   const {
     data: productData,
     isLoading: isProductLoading,
