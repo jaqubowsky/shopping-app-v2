@@ -12,7 +12,7 @@
    Front-end side of Fake E-commerce Store App
     <br />
     <br />
-    <a href="https://github.com/jaqubowsky/shopping-app-v2">View Demo</a>
+    <a href="https://boisterous-pastelito-fa5201.netlify.app">View Demo</a>
     ·
     <a href="https://github.com/jaqubowsky/shopping-app-v2/issues">Report Bug</a>
     ·
@@ -47,8 +47,17 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
+<h3>You can: </h3>
+<ul>
+  <li>Register and login</li>
+  <li>Delete account</li>
+  <li>Add product and edit it</li>
+  <li>Search and filter yours and other users products</li>
+  <li>Delete product</li>
+  <li>View your products</li>
+</ul>
 
-[![Fake Store Project Screenshot][product-screenshot]](https://github.com/jaqubowsky/shopping-app-v2)
+[![Fake Store Project Screenshot][product-screenshot]](https://boisterous-pastelito-fa5201.netlify.app)
   
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -95,7 +104,7 @@
 
 <ul>
  <li>Wrong route page</li>
- <li>Uploading multiple images to user</li>
+ <li>Uploading multiple images to product</li>
  <li>Editing user profile</li>
 </ul>
 
