@@ -3,7 +3,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/jaqubowsky/shopping-app-v2">
-    <img src="public/images/logo.png" alt="Logo" width="80" height="80">
+    <img src="/src/assets/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">FullStack Fake E-Commerce Store App</h3>
@@ -114,5 +114,5 @@ Project Link: (https://github.com/jaqubowsky/shopping-app-v2)
 [React]: https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB
 [TailwindCSS]: https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white
 [TypeScript]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
-[product-screenshot]: public/images/prev.png
+[product-screenshot]: /src/assets/prev.png
 
