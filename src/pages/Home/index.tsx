@@ -22,7 +22,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex flex-col items-center justify-center mt-2">
+      <div className="mt-2 flex flex-col items-center justify-center">
         <SearchBar searchParams={searchParams} redirectTo="/products" />
         <h2 className="text-3xl">
           Main{" "}
