@@ -55,6 +55,7 @@
   <li>Search and filter yours and other users products</li>
   <li>Delete product</li>
   <li>View your products</li>
+  <li>Add and delete product grom cart</li>
 </ul>
 
 [![Fake Store Project Screenshot][product-screenshot]](https://boisterous-pastelito-fa5201.netlify.app)
@@ -106,6 +107,7 @@
  <li>Wrong route page</li>
  <li>Uploading multiple images to product</li>
  <li>Editing user profile</li>
+ <li>Allow to add only one product to cart</li>
 </ul>
 
 <!-- CONTACT -->
