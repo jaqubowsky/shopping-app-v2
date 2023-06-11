@@ -33,10 +33,10 @@ function ProductPage() {
   if (!product) return <div>Product not found</div>;
 
   return (
-    <div className="flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
+    <div className="mt-2 flex w-full max-w-screen-xl flex-col items-center justify-center gap-6">
       {/* image */}
       <div className="flex flex-col gap-4 md:flex-row">
-        <section className="product-section w-96">
+        <section className="product-section shrink flex max-w-sm">
           <img
             className="object-fit h-full w-full"
             alt={product.name}
@@ -78,7 +78,7 @@ function ProductPage() {
       </div>
 
       {/* description */}
-      <section className="product-section md:w-3/4">
+      <section className="product-section w-full md:w-3/4">
         <h2 className="mb-2 text-xl">Description</h2>
         <p className="mb-2 break-words p-2">{product.description}</p>
       </section>
