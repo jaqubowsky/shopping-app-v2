@@ -55,7 +55,7 @@
   <li>Search and filter yours and other users products</li>
   <li>Delete product</li>
   <li>View your products</li>
-  <li>Add and delete product grom cart</li>
+  <li>Add and delete product from cart</li>
 </ul>
 
 [![Fake Store Project Screenshot][product-screenshot]](https://boisterous-pastelito-fa5201.netlify.app)
